@@ -16,14 +16,54 @@ address:
 abstract: |
   This is the abstract.
 
-  It consists of two paragraphs.
-
+layout:  3p # review = doublespace, 3p = singlespace, 5p = two-column
+preamble: |
+  \newcommand{\ud}{\mathrm{d}}
+  \usepackage[nomarkers]{endfloat}
+  \linenumbers
+  \usepackage{setspace}
+  \doublespacing
 journal: Journal of Mathematical Biology
-bibliography: mybibfile.bib
+bibliography: refs.bib
+csl: journal-of-mathematical-biology.csl
 output: rticles::elsevier_article
 
 keywords: tipping point, bifurcation, saddle-node, state
 ---
+
+
+# Introduction
+
+Critical transistions.
+
+Two flavors: S tipping vs B tipping
+
+Dimensionality.  Absense of an explicit model often makes it difficult to intuit if and how a complex ecosystem can be intepreted in terms of this simple one-dimensional bifurcation process.  Lack of clarity about what defines the "state" and what defines the "parameters" leads to confusion.  These issues are easily glossed over...
+
+Focus on a prominent example from lake ecosystems.
+
+
+# Model
+
+@Carpenter2008
+
+# Analysis 
+
+Dimensionality reduction
+
+
+## Implications for Resilience and Early Warning
+
+# Discussion
+
+# Acknowledgements
+
+CB acknowledges support in part from USDA National Institute of Food and Agriculture, Hatch project CA-B-INS-0162-H.
+
+
+\newpage
+
+# References 
 
 
 
