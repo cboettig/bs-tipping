@@ -2,12 +2,13 @@
 title: S-Tipping vs B-Tipping
 ## We can figure out author order later on who end up doing more etc :-)
 author:
+  - name: Ryan Batt
+    affiliation: epa
   - name: Carl Boettiger
     email: cboettig@berkeley.edu
     affiliation: espm
     footnote: Corresponding Author
-  - name: Ryan Batt
-    affiliation: epa
+
 address:
   - code: Some Institute of Technology
     address: Department of Environmental Science, Policy, and Management, University of California, Berkeley, CA 94720
