@@ -1,6 +1,13 @@
 Type: Compendium
 Package: bstipping
 Version: 0.1.0
-Depends: tidyverse
-Imports: rmarkdown, testthat, lintr, rticles
-
+Depends:
+    R (>= 3.3.0)
+Imports:
+    rmarkdown,
+    testthat,
+    lintr,
+    rticles
+Suggests:
+    tidyverse
+RoxygenNote: 5.0.1
