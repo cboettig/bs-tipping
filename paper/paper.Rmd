@@ -10,7 +10,7 @@ author:
     footnote: Corresponding Author
 
 address:
-  - code: Some Institute of Technology
+  - code: espm
     address: Department of Environmental Science, Policy, and Management, University of California, Berkeley, CA 94720
   - code: epa
     address: Environmental Protection Agency, ...
@@ -50,8 +50,63 @@ Focus on a prominent example from lake ecosystems.
 
 # Analysis 
 
-Dimensionality reduction
+Variable | Description
+-------- | ----------------
+ $A$     | Adult Bass
+ $J$     | Juvenile Bass
+ $F$     | Planktivore zooplankton
+ $H$     | Herbivorous zooplankton
+ $P$     | Phytoplankton
+ 
 
+The original model presented in @Carpenter2008 is defined in terms of continuous dynamics within years coupled to discrete annual dynamics.  Within a given year:
+ 
+$$\frac{d A}{dt} = - q E A$$
+$$d F = \left(D_f (F_R - F) - c_{FA} FA \right) dt  + \sigma_F dW_f$$
+
+$$ \frac{dJ}{dt} = -c_{JA} JA - \frac{c_{JF} v FJ}{h + v + c_{JF} F}$$ 
+
+
+While dynamics between years are defined in terms of integrals over the within-year dynamics:
+
+$$A_{t+1} = s \int_t^{t+i} \left(A_{t} + J_{t} \right) dt $$
+$$F_{t+1} = \int_t^{t+i} F_{t} dt $$
+
+$$J_{t+1} = fsA_{t+1}$$
+
+Based on these equations, we can approximate these dynamics in continuous time as: 
+
+$$\frac{d A}{dt} = - q E A_t + sJ $$
+$$d F = \left(D_f (F_R - F) - c_{FA} FA \right) dt  + \sigma_F dW_f$$
+
+
+$$\frac{dJ}{dt} = -c_{JA} JA - \frac{c_{JF} v FJ}{h + v + c_{JF} F} + fA$$
+
+
+
+
+Dynamics for herbivorous plankton and phytoplankton are given only in continuous time:
+
+$$dH = \left(D_H (H_R - H) + \alpha c_{HP} HP - c_{HF} HF\right) dt + \sigma_H dW_h$$
+
+$$dP = \left( r_P L \gamma(I_o, P) P  - m P - c_{PH} HP \right) dt + \sigma_P dW_P$$
+
+### Non-Dimensionalization
+
+
+$$\tilde F := D_f (F - F_R) $$
+$$\frac{d A}{dt} = - q E A_t + sJ $$
+$$d \tilde F = \left(-\tilde F - c_{fA} \tilde F A \right) dt  + \sigma_F dW_f$$
+$$\alpha := \frac{h+v}{c_{JF}} $$
+
+$$\frac{d J}{dt} = fA -\left(c_{JA} A + \frac{v F}{\alpha + F} \right) J $$
+
+
+$$\tilde H = D_H (H - H_R) $$
+$$d \tilde H = \tilde H \left(1 + \alpha c_{\tilde HP} P - c_{\tilde HF} F\right) dt + \sigma_H dW_h$$
+
+
+### Dimensionality reduction
 
 ## Implications for Resilience and Early Warning
 
