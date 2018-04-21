@@ -96,13 +96,13 @@ $$dP = \left( r_P L \gamma(I_o, P) P  - m P - c_{PH} HP \right) dt + \sigma_P dW
 
 $$\tilde F := D_f (F - F_R) $$
 $$\frac{d A}{dt} = - q E A_t + sJ $$
-$$d \tilde F = \left(-\tilde F - c_{fA} \tilde F A \right) dt  + \sigma_F dW_f$$
-$$\alpha := \frac{h+v}{c_{JF}} $$
+$$d \tilde F = - \left(1 + c_{fA} A \right) \tilde F  dt  + \sigma_F dW_f$$
+$$\beta := \frac{h+v}{c_{JF}} $$
 
-$$\frac{d J}{dt} = fA -\left(c_{JA} A + \frac{v F}{\alpha + F} \right) J $$
+$$\frac{d J}{dt} = fA -\left(c_{JA} A + \frac{v F}{\beta + F} \right) J $$
 
 
-$$\tilde H = D_H (H - H_R) $$
+$$\tilde H := D_H (H - H_R) $$
 $$d \tilde H = \tilde H \left(1 + \alpha c_{\tilde HP} P - c_{\tilde HF} F\right) dt + \sigma_H dW_h$$
 
 
