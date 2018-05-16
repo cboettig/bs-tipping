@@ -3,7 +3,7 @@ title: S-Tipping vs B-Tipping
 ## We can figure out author order later on who end up doing more etc :-)
 author:
   - name: Ryan Batt
-    affiliation: epa
+    affiliation: Rensselaer Polytechnic Institute and Rutgers University
   - name: Carl Boettiger
     email: cboettig@berkeley.edu
     affiliation: espm
