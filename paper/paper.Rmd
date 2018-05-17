@@ -3,7 +3,7 @@ title: S-Tipping vs B-Tipping
 ## We can figure out author order later on who end up doing more etc :-)
 author:
   - name: Ryan Batt
-    affiliation: Rensselaer Polytechnic Institute and Rutgers University
+    affiliation: rpirutgers
   - name: Carl Boettiger
     email: cboettig@berkeley.edu
     affiliation: espm
@@ -12,8 +12,8 @@ author:
 address:
   - code: espm
     address: Department of Environmental Science, Policy, and Management, University of California, Berkeley, CA 94720
-  - code: epa
-    address: Environmental Protection Agency, ...
+  - code: rpirutgers
+    address: Rensselaer Polytechnic Institute and Rutgers University
 abstract: |
   This is the abstract.
 
