@@ -142,7 +142,7 @@ plot(stateMat[,c("time","J0")], type='l')
 #' 
 #' Substitute Eq6 into Eq2, giving us the dynamics of $F$ as a function of $F$ and parameters:  
 #' \begin{array}{llr}
-#' \dot{F} &= d(F_o-F) - aF(\frac{sf}{x(qE+1-s)} - \frac{s}{x} - \frac{zvf}{x(h+v+zF)}) &(7)
+#' \dot{F} &= d(F_o-F) - aF(\frac{sf}{x(qE+1-s)} - \frac{s}{x} - \frac{zvF}{x(h+v+zF)}) &(7)
 #' \end{array}
 #'   
 #' Eq7 is what is used in `dF_dt_1state`.
