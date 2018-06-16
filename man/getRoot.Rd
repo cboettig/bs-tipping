@@ -2,8 +2,7 @@
 % Please edit documentation in R/getRoot.R
 \name{getRoot}
 \alias{getRoot}
-\title{Get the Root of the Fish Model
-Numerically finds the roots of the fish model given starting values (adults, [sun]fish, and juveniles) and parameter (harvest of adults, qE)}
+\title{Get the Root of the Fish Model}
 \usage{
 getRoot(x, pars, maxiter = 1000, ...)
 }
@@ -20,7 +19,6 @@ getRoot(x, pars, maxiter = 1000, ...)
 numeric vector with roots
 }
 \description{
-Get the Root of the Fish Model
 Numerically finds the roots of the fish model given starting values (adults, [sun]fish, and juveniles) and parameter (harvest of adults, qE)
 }
 \examples{

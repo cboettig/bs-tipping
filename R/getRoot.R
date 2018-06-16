@@ -1,5 +1,7 @@
 #' Get the Root of the Fish Model
+#' 
 #' Numerically finds the roots of the fish model given starting values (adults, [sun]fish, and juveniles) and parameter (harvest of adults, qE)
+#' 
 #' @param x a vector of length 3 with names A0 (water P), F0 (mud P), and J0 (P loading)
 #' @param pars vector of parameters to pass to model
 #' @param maxiter maximum number of iterations to use when finding root
