@@ -3,7 +3,7 @@
 \name{getRoot}
 \alias{getRoot}
 \title{Get the Root of the Fish Model
-Finds the roots of the fish model given starting values (adults, [sun]fish, and juveniles) and parameter (harvest of adults, qE)}
+Numerically finds the roots of the fish model given starting values (adults, [sun]fish, and juveniles) and parameter (harvest of adults, qE)}
 \usage{
 getRoot(x, pars, maxiter = 1000, ...)
 }
@@ -21,9 +21,12 @@ numeric vector with roots
 }
 \description{
 Get the Root of the Fish Model
-Finds the roots of the fish model given starting values (adults, [sun]fish, and juveniles) and parameter (harvest of adults, qE)
+Numerically finds the roots of the fish model given starting values (adults, [sun]fish, and juveniles) and parameter (harvest of adults, qE)
 }
 \examples{
+getRoot(c(A0=1, F0=1, J0=1), pars=c(qE=0.65))
+getRoot(c(A0=1000, F0=1, J0=1000), pars=c(qE=0.65))
 getRoot(c(A0=1, F0=1, J0=1), pars=c(qE=0.5))
+getRoot(c(A0=1000, F0=1, J0=1000), pars=c(qE=0.5))
 }
 
