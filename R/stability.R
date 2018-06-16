@@ -8,7 +8,6 @@
 #' @return numeric value(s) corresponding to roots of F
 #' @examples
 #' calcRoot_F(pars=c(qE=0.5))
-#' @export
 calcRoot_F <- function(pars){
 	parsF <- unlist(formals(ecoStep)[c("fA", "cJA", "cJF", "cFA", "vuln", "hide", "surv", "Fo", "DF")])
 	
