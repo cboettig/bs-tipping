@@ -1,5 +1,5 @@
 
-#' Claculate the Roots of F
+#' Calculate the Roots of F
 #' 
 #' Calculate the roots of F (planktivorous fish) by solving a polynomial
 #' 

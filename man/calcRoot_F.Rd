@@ -2,7 +2,7 @@
 % Please edit documentation in R/stability.R
 \name{calcRoot_F}
 \alias{calcRoot_F}
-\title{Claculate the Roots of F}
+\title{Calculate the Roots of F}
 \usage{
 calcRoot_F(pars)
 }
