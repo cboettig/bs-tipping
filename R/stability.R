@@ -57,16 +57,16 @@ calcRoot_F <- function(pars){
 #' getRoot(c(A0=1, F0=1, J0=1), pars=c(qE=0.5)) # find equilibria when bass are rare
 #' dFJ_dt_1state(State0=17.890184, pars=c(qE=0.5), stateName="F0") # F0 set to equilibrium when bass start as rare
 #' dFJ_dt_1state(State0=3.06, pars=c(qE=0.5), stateName="J0") # J0 set to equilibrium when bass start as rare
-#'
+#' 
 #' getRoot(c(A0=1000, F0=1, J0=1000), pars=c(qE=0.5)) # find equilibria when bass are abundant
 #' dFJ_dt_1state(State0=0.06712064, pars=c(qE=0.5), stateName="F0") # F0 set to equilibrium when bass start as abundant
 #' dFJ_dt_1state(State0=992.5699, pars=c(qE=0.5), stateName="J0") # J0 set to equilibrium when bass start as abundant
-#'
+#' 
 #' getRoot(c(A0=1, F0=1, J0=1), pars=c(qE=0.65)) # find equilibria when bass are rare
 #' dFJ_dt_1state(State0=100, pars=c(qE=0.65), stateName="F0") # F0 set to equilibrium when bass start as rare # WTF?!
 #' fishStep(X=c(A0=6.275129e-18, F0=100, J0=1.443280e-17))
 #' dFJ_dt_1state(State0=1.44e-17, pars=c(qE=0.65), stateName="J0") # J0 set to equilibrium when bass start as rare # Makes sense
-#'
+#' 
 #' getRoot(c(A0=1000, F0=1, J0=1000), pars=c(qE=0.65)) # find equilibria when bass are abundant
 #' dFJ_dt_1state(State0=0.09136212, pars=c(qE=0.65), stateName="F0") # check planktivore equation for rate of change
 #' dFJ_dt_1state(State0=838.3849, pars=c(qE=0.65), stateName="J0") # check juvenile equation for rate of change
