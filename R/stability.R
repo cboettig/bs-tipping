@@ -158,9 +158,95 @@ dU_dF <- function(F, pars){
 }
 
 
+#' Find Critical Values
+#' 
+#' Find the critical values of harvest in the trophic cascade model
+#' 
+#' @param parRange range of parameter (qE) values over which to search
+#' @param stateRange range of state variable (J0) values over which to search
+#' @param par_nGrid size of grid of parameter (qE) values
+#' @param state_nGrid size of grid of state variable (J0) values
+#' 
+#' @return a vector of critical values of qE
+#' @examples
+#'  findCritHarv(par_nGrid=1E2, state_nGrid=1E3) # fast but very inaccurate
+#' findCritHarv(par_nGrid=1E2, state_nGrid=5E4) # closer, but still off
+findCritHarv <- function(parRange=c(0.15,1.5), stateRange=c(0,2E3), par_nGrid=3E2, state_nGrid=5E5){
+	stopifnot(par_nGrid>=30)
+	
+	# qE values to initially screen
+	qE_vals <- seq(parRange[1], parRange[2], length.out=par_nGrid)
+	
+	# function to return roots at each qE (basically like 'getRoot' function)
+	getStates <- function(qE, xR){
+		uniroot.all(f=dFJ_dt_1state, interval=c(xR[1], xR[2]), pars=c(qE=qE), n=state_nGrid)
+	}
+	qE_states <- lapply(qE_vals, getStates, xR=stateRange)
+	qE_nStates <- sapply(qE_states, length) # n states per qE
+	
+	# function to return qE value when number of states changes
+	dStates <- function(x, qe){
+		qe[(1+which(diff(x)!=0))]
+	}
+	critGuess0 <- dStates(qE_nStates, qe=qE_vals) # initial guess at qE critical values
+	
+	return(critGuess0)
+	
+	
+	# nStates <- function(qE, xR){
+# 		length(getStates(qE,xR))
+# 	}
+# 	critVal <- c()
+# 	xR_new <- range(qE_states)
+# 	crit_jitter <- diff(parRange)*0.1*c(-1,1)
+# 	# crit_jitter <- c(-2, 2)*mean(diff(qE_vals)) # could probably change to c(-1,1)
+# 	for(j in 1:length(critGuess0)){
+# 		# xR_new <- range(qE_states[qE_vals==critGuess0[j]])
+# 		qE_range_new <- crit_jitter+critGuess0[j]
+# 		qE_vals_new <- seq(qE_range_new[1], qE_range_new[2], length.out=par_nGrid)
+# 		qE_states_new <- sapply(qE_vals_new, nStates, xR=xR_new)
+# 		critVal[j] <- dStates(qE_states_new, qe=qE_vals_new)
+# 	}
+#
+# 	return(critVal)
+	
+}
 
 
+#' Stability Classification
+#' 
+#' Find equilibria for a model of a trophic cascade
+#' 
+#' @param qE numeric scalar representing harvest rate; reasonable values might be between 0 and 2
+#' @param pars a named numeric vector of optional additional parameter values to be passed to \code{func}
+#' @param func function whose stability is to be classified; nominally this is \code{fs2D}, a wrapper for \code{\link{fishStep2D}}; currently this function only works with the default b/c \code{\link{getRoot_df}} hasn't been set up to accept other functions as an argument
+#' @param Jvals,Mvals numeric vector of J0 (juvenile bass) or F0 (planktivorous fish) values over which to search for equilibria
+#' @return a data.frame with a row for each equilibrium point found, and columns for the J0,F0 coordinates of those points, a character describing its stability classification, the trace (tr) and determinant (Delta) of the Jacobian matrix at that point, the 'discriminant' value (tr^2 - 4*delta), and the parameter values supplied through qE and pars.
+#' @examples
+#' stabClass(qE=0.65)
+#' qEvec <- seq(0.15, 1.5, length.out=10)
+#' lout <- lapply(qEvec, stabClass)
+#' do.call(rbind, lout)
+#' @export
+stabClass <- function(qE, pars, func=fs2D, Jvals=seq(0,2E3,length.out=2), Fvals=seq(10,20, length.out=2)){
+	requireNamespace("phaseR", quietly=TRUE)
+	if(missing(pars)){pars <- NULL}
+	if("qE"%in%names(pars)){pars <- pars[names(pars)!="qE"]}
+	gridVals <- cbind(expand.grid(J0=Jvals, F0=Fvals), qE=qE)
+	rs <- getRoot2D_df(gridVals, pars=pars)
+	rs <- rs[complete.cases(rs),,drop=FALSE]
+	urs <- rs[!duplicated(paste0(round(rs[,"J0"],4),round(rs[,"F0"],4))), c("qE","J0","F0"), drop=FALSE]
 
+	stab <- function(x){
+		st <- phaseR::stability(fs2D, y.star=x[-1,drop=FALSE], parameters=c(qE=qE,pars), summary=FALSE)
+		# if(is.null(names(st$parameters))){names(st$parameters) <- "I"}
+		o <- cbind(data.frame(J0=st$y.star[1], F0=st$y.star[2], classification=st$classification, Delta=st$Delta, discriminant=st$discriminant, tr=st$tr),as.list(st$parameters))
+		rownames(o) <- NULL
+		o$classification <- as.character(o$classification)
+		return(o)
+	}
+	do.call('rbind', apply(urs, 1, stab))
+}
 
 
 
