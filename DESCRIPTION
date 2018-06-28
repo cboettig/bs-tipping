@@ -1,8 +1,30 @@
 Type: Compendium
 Package: bs.tipping
 Title: Bifurcation or State Tipping in a Trophic Cascade Experiment
-Description: A trophic cascade involves indirect interactions among more than two trophic levels in a food web. For example, a top predator is added, its prey become more scarce (a direct interaction), but then the prey's prey become more abundant (indirect interaction between the top predator and the prey's prey). In some systems, as the top predator is added, the changes in abundance at other trophic levels do not always occur gradually, instead happening very rapidly near a tipping point. An experiment demonstrating this phenomenon, and aimed at evaluating methods for predicting such abrupt events in ecosystems, was conducted in a lake where largemouth bass were added to the lake. This sytem can be modeled as interactions among adult and juvenile bass, and planktivorous (plankton-feeding) fish, and possibly other portions of the food web (zooplankton, phytoplankton). The aim of this package is to determine whether manipulating largemouth bass, a state variable in the aforementioned model, induces a bifurcation, or results in state tipping. I.e., are bass effectively a parameter, or are they truly a state variable? The answer to this question may hold implications for how such rapid transitions are predicted, and how the results of past experiments should be interpreted.
-Authors@R: c(person("Ryan", "Batt", email = "battrd@gmail.com", role = c("aut", "cre")), person("Carl", "Boettiger", email="cboettig@berkeley.edu", role=c("aut")))
+Description: A trophic cascade involves indirect interactions among 
+             more than two trophic levels in a food web. For example,
+             a top predator is added, its prey become more scarce 
+             (a direct interaction), but then the prey's prey become
+             more abundant (indirect interaction between the top predator
+             and the prey's prey). In some systems, as the top predator
+             is added, the changes in abundance at other trophic levels
+             do not always occur gradually, instead happening very rapidly
+             near a tipping point. An experiment demonstrating this phenomenon,
+             and aimed at evaluating methods for predicting such abrupt
+             events in ecosystems, was conducted in a lake where largemouth
+             bass were added to the lake. This sytem can be modeled as
+             interactions among adult and juvenile bass, and planktivorous
+             (plankton-feeding) fish, and possibly other portions of the
+             food web (zooplankton, phytoplankton). The aim of this
+             package is to determine whether manipulating largemouth bass,
+             a state variable in the aforementioned model, induces a
+             bifurcation, or results in state tipping. I.e., are 
+             bass effectively a parameter, or are they truly a 
+             state variable? The answer to this question may hold
+             implications for how such rapid transitions are predicted,
+             and how the results of past experiments should be interpreted.
+Authors@R: c(person("Ryan", "Batt", email = "battrd@gmail.com", role = c("aut", "cre")), 
+             person("Carl", "Boettiger", email="cboettig@berkeley.edu", role=c("aut")))
 Version: 0.1.0
 Depends:
     R (>= 3.3.0)
@@ -16,6 +38,7 @@ Imports:
     rticles,
     stats,
     methods,
+    phaseR,
     deSolve,
     rootSolve
 Suggests:

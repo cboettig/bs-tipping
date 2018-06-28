@@ -7,7 +7,7 @@
 getRoot(x, pars, maxiter = 1000, ...)
 }
 \arguments{
-\item{x}{a vector of length 3 with names A0 (water P), F0 (mud P), and J0 (P loading)}
+\item{x}{a vector of length 3 with names A0 (adult bass), F0 (planktivorous fish), and J0 (juvenile bass)}
 
 \item{pars}{vector of parameters to pass to model}
 
