@@ -180,7 +180,7 @@ findCritHarv <- function(parRange=c(0.05,1.5), stateRange=c(0,2E3), par_nGrid=3E
 	
 	# function to return roots at each qE (basically like 'getRoot' function)
 	getStates <- function(qE, xR){
-		uniroot.all(f=dFJ_dt_1state, interval=c(xR[1], xR[2]), pars=c(qE=qE), n=state_nGrid)
+		rootSolve::uniroot.all(f=dFJ_dt_1state, interval=c(xR[1], xR[2]), pars=c(qE=qE), n=state_nGrid)
 	}
 	qE_states <- lapply(qE_vals, getStates, xR=stateRange)
 	qE_nStates <- sapply(qE_states, length) # n states per qE
