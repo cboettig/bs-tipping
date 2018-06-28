@@ -172,7 +172,7 @@ dU_dF <- function(F, pars){
 #'  findCritHarv(par_nGrid=1E2, state_nGrid=1E3) # fast but very inaccurate
 #' findCritHarv(par_nGrid=1E2, state_nGrid=5E4) # closer, but still off
 #' @export
-findCritHarv <- function(parRange=c(0.15,1.5), stateRange=c(0,2E3), par_nGrid=3E2, state_nGrid=5E5){
+findCritHarv <- function(parRange=c(0.05,1.5), stateRange=c(0,2E3), par_nGrid=3E2, state_nGrid=5E5){
 	stopifnot(par_nGrid>=30)
 	
 	# qE values to initially screen

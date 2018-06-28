@@ -4,7 +4,7 @@
 \alias{findCritHarv}
 \title{Find Critical Values}
 \usage{
-findCritHarv(parRange = c(0.15, 1.5), stateRange = c(0, 2000),
+findCritHarv(parRange = c(0.05, 1.5), stateRange = c(0, 2000),
   par_nGrid = 300, state_nGrid = 5e+05)
 }
 \arguments{
