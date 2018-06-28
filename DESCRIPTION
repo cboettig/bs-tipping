@@ -13,7 +13,10 @@ Imports:
     rmarkdown,
     testthat,
     lintr,
-    rticles
+    rticles,
+    phaseR,
+    deSolve,
+    rootSolve
 Suggests:
     tidyverse
 RoxygenNote: 5.0.1
