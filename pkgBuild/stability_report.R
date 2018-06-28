@@ -35,6 +35,9 @@ t1 <- Sys.time()
 # =================
 # = Load Packages =
 # =================
+library(viridis)
+library(phaseR)
+library(rootSolve)
 library(bs.tipping)
 
 # Report
@@ -234,6 +237,34 @@ fishStep(X=c(A0=6.275129e-18, F0=100, J0=1.443280e-17)) # but this one says that
 #' Update: apparently **Part 4** (above) doesn't work properly because in the algebra we dvide by A in a place that implies the assumption that A≠0. So when we try to use the equation when A=0, it doesn't work well.  
 #' 
 #'   
+#'   
+#' \FloatBarrier  
+#'   
+#' ***  
+#'   
+#' #Stability Analysis
+#' ##Critical Values
+#+ critVals
+(critVals <- findCritHarv()) # 0.24 and 1.22
+#' These critical values were found numerically using the 1D model.  
+#'   
+#' ##Stability Classification
+#+ stabClass, results="markup"
+qEvec <- c(0, critVals[1]-0.2, critVals[1], critVals[2]-0.1, critVals[2]-0.05, critVals[2])
+lout <- lapply(qEvec, stabClass)
+do.call(rbind, lout)
+#' I'm a little confused, because there is no place I could find with 2 stable nodes and 1 saddle point.  
+#'   
+#+ figure-phasePortrait, fig.width=6, fig.height=6, fig.cap="**Figure 1.** A phase portrait of the system for varying values of harvest (qE). The vector field (indicating the direction and speed that the system moves through phase space at that point) is represented by gray arrows. Nullclines are represented red and blue lines, indicating where dJ/dt and dF/dt are equal to zero, respectively.  Trajectories starting at arbitrary initial points (open diamonds) and continuing the along the accompanying solid black line indicate how the system moves from the initial point through phase space for 20 years. Equilibria are indicated by points: solid filled circle is a stable node, an 'X' is a saddle point. An equilibrium occurs whereever the nullclines cross. The different panels correspond to different values of harvest (qE). "
+qEvals <- rev(c(critVals[1]-0.2, critVals[1], critVals[2]-0.1, critVals[2]))
+par(mfrow=c(2,2), mar=c(2,2,1,0.5), mgp=c(1,0.25,0), tcl=-0.15, cex=1, ps=9, cex.axis=0.85)
+for(j in 1:4){
+	(bs.tipping::phasePortrait(qE=qEvals[j], pars=NULL, nFlow=10, nNull=300, t.end=20, addLeg=TRUE))
+	mtext(paste0("qE = ",round(qEvals[j],2)), side=3, line=0, adj=0, font=2)
+}
+
+
+
 #' \FloatBarrier  
 #'   
 #' ***  
