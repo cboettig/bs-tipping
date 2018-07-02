@@ -255,6 +255,7 @@ lout <- lapply(qEvec, stabClass)
 do.call(rbind, lout)
 #' I'm a little confused, because there is no place I could find with 2 stable nodes and 1 saddle point.  
 #'   
+#' ##Phase Portrait
 #+ figure-phasePortrait, fig.width=6, fig.height=6, fig.cap="**Figure 1.** A phase portrait of the system for varying values of harvest (qE). The vector field (indicating the direction and speed that the system moves through phase space at that point) is represented by gray arrows. Nullclines are represented red and blue lines, indicating where dJ/dt and dF/dt are equal to zero, respectively.  Trajectories starting at arbitrary initial points (open diamonds) and continuing the along the accompanying solid black line indicate how the system moves from the initial point through phase space for 20 years. Equilibria are indicated by points: solid filled circle is a stable node, an 'X' is a saddle point. An equilibrium occurs whereever the nullclines cross. The different panels correspond to different values of harvest (qE). "
 qEvals <- rev(c(critVals[1]-0.2, critVals[1], critVals[2]-0.1, critVals[2]))
 par(mfrow=c(2,2), mar=c(2,2,1,0.5), mgp=c(1,0.25,0), tcl=-0.15, cex=1, ps=9, cex.axis=0.85)
@@ -262,7 +263,42 @@ for(j in 1:4){
 	(bs.tipping::phasePortrait(qE=qEvals[j], pars=NULL, nFlow=10, nNull=300, t.end=20, addLeg=TRUE))
 	mtext(paste0("qE = ",round(qEvals[j],2)), side=3, line=0, adj=0, font=2)
 }
-
+#'   
+#' \FloatBarrier  
+#'   
+#' ***  
+#'   
+#' 
+#' ##Growth and Consumption Curves: dJ/dt vs J
+#+ figure-grow-cons-J, fig.width=6, fig.height=6, fig.cap="**Figure.** Growth and consumption curves for juvenile bass (J). Different panels show the curves for varying values of harvest rate on adult bass (qE)."
+# dFJ_dt_1state <- function(State0, pars, stateName=c("J0","F0"), parts=FALSE){
+plot_growCons <- function(stateRange=c(0,999), pars=c(qE=1.0), stateName=c("J0","F0"), nGrid=100){
+	stateName <- match.arg(stateName)
+	stopifnot(length(stateRange)==2)
+	
+	names(stateRange) <- c("from", "to")
+	grid_args <- c(as.list(stateRange), length.out=nGrid)
+	stateGrid <- do.call(seq, grid_args)
+	
+	rates <- t(sapply(stateGrid, dFJ_dt_1state, pars=pars, stateName=stateName, parts=TRUE))
+	state_rates <- data.table(state=stateGrid, rates)
+	
+	ylim <- state_rates[,range(c(growth, consumption))] #range(state_rates[,c("growth", "consumption")])
+	state_rates[,plot(state,growth, col='blue', type='l', ylim=ylim, xlab="", ylab="")]
+	state_rates[,lines(state,consumption, col='red')]
+	
+}
+qEvals <- rev(c(critVals[1]-0.2, critVals[1], critVals[2]-0.1, critVals[2]))
+par(mfrow=c(2,2), mar=c(2,2,1,0.5), mgp=c(1,0.25,0), tcl=-0.15, cex=1, ps=9, cex.axis=0.85)
+for(j in 1:4){
+	
+	plot_growCons(pars=c(qE=qEvals[j]))
+	
+	mtext(paste0("qE = ",round(qEvals[j],2)), side=3, line=0, adj=0, font=2)
+	mtext("dJ/dt", side=2, line=0.85)
+	mtext("J", side=1, line=0.85)
+	legend("topleft", legend=c("growth", "consumption"), col=c("blue","red"), lty=1)
+}
 
 
 #' \FloatBarrier  

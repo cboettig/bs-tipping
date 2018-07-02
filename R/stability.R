@@ -51,8 +51,9 @@ calcRoot_F <- function(pars){
 #' @param State0 abundance of planktivorous fish (F0) or abundance of juvenile bass (J0)
 #' @param pars named vector of parameters found in \code{\link{ecoStep}}. At a minimum, qE needs to be supplied. Optionally, other parameter arguments can be supplied here, but if they aren't, they are taken from the formals (defaults) of \code{\link{ecoStep}}.
 #' @param stateName a length-1 character indicating whether the value supplied (and value returned) pertains to "F0" (planktivores) or "J0" (juvenile bass). Juveniles ("J0") is chosen by default.
+#' @param parts Logical, if FALSE (default), function returns the rate of change in the indicated state variable. If TRUE, function returns the rate of 'growth' (>=0) and the rate of 'consumption' (<=0) for the indicated state variable.
 #' 
-#' @return numeric value indicating temporal rate of change of F or J
+#' @return numeric value indicating temporal rate of change of F or J; or, if parts==TRUE, a named vector of length 2 indicate the growth and consumption components of the temporal rate of change of F or J.
 #' @examples
 #' getRoot(c(A0=1, F0=1, J0=1), pars=c(qE=0.5)) # find equilibria when bass are rare
 #' dFJ_dt_1state(State0=17.890184, pars=c(qE=0.5), stateName="F0") # F0 set to equilibrium when bass start as rare
@@ -72,7 +73,7 @@ calcRoot_F <- function(pars){
 #' dFJ_dt_1state(State0=838.3849, pars=c(qE=0.65), stateName="J0") # check juvenile equation for rate of change
 #' fishStep(X=c(A0=364.51517642, F0=0.09136212, J0=838.38490576)) # re-examine rates of change of fish near equilibrium
 #' @export
-dFJ_dt_1state <- function(State0, pars, stateName=c("J0","F0")){
+dFJ_dt_1state <- function(State0, pars, stateName=c("J0","F0"), parts=FALSE){
 	stateName <- match.arg(stateName)
 	if(stateName=="J0"){
 		J0 <- State0
@@ -100,18 +101,29 @@ dFJ_dt_1state <- function(State0, pars, stateName=c("J0","F0")){
 		d <- DF
 				
 		if(stateName=="F0"){
-			dVal <- d*(Fo-F0) - a*F0* ( (s*f)/(x*(qE+1-s)) - s/x - (z*v*F0)/(x*(h+v+z*F0)) )
+			# dVal <- d*(Fo-F0) - a*F0* ( (s*f)/(x*(qE+1-s)) - s/x - (z*v*F0)/(x*(h+v+z*F0)) )
+			dVal_grow <- d*(Fo-F0)
+			dVal_cons <- - a*F0* ( (s*f)/(x*(qE+1-s)) - s/x - (z*v*F0)/(x*(h+v+z*F0)) )
+			
 		}
 		if(stateName=="J0"){
 			Q <- 1/(qE+1-s)
-			dVal <- f*s*J0*Q - x*J0^2*s*Q - s*J0 - (z*v*J0)/((h+v)/((d*Fo)/(d+a*s*J0*Q)) + z)
+			# dVal <- f*s*J0*Q - x*J0^2*s*Q - s*J0 - (z*v*J0)/((h+v)/((d*Fo)/(d+a*s*J0*Q)) + z)
+			dVal_grow <- f*s*J0*Q
+			dVal_cons <- - x*J0^2*s*Q - s*J0 - (z*v*J0)/((h+v)/((d*Fo)/(d+a*s*J0*Q)) + z)
+		}
+		
+		if(parts){
+			dVal <- c(growth=unname(dVal_grow), consumption=unname(dVal_cons))
+		}else{
+			dVal <- unname(dVal_grow + dVal_cons)
 		}
 
 		dVal
 		
 	})
 	
-	return(unname(out))
+	return(out)
 	
 }
 

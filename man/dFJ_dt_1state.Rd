@@ -4,7 +4,7 @@
 \alias{dFJ_dt_1state}
 \title{Temporal dynamics of F or J}
 \usage{
-dFJ_dt_1state(State0, pars, stateName = c("J0", "F0"))
+dFJ_dt_1state(State0, pars, stateName = c("J0", "F0"), parts = FALSE)
 }
 \arguments{
 \item{State0}{abundance of planktivorous fish (F0) or abundance of juvenile bass (J0)}
@@ -12,9 +12,11 @@ dFJ_dt_1state(State0, pars, stateName = c("J0", "F0"))
 \item{pars}{named vector of parameters found in \code{\link{ecoStep}}. At a minimum, qE needs to be supplied. Optionally, other parameter arguments can be supplied here, but if they aren't, they are taken from the formals (defaults) of \code{\link{ecoStep}}.}
 
 \item{stateName}{a length-1 character indicating whether the value supplied (and value returned) pertains to "F0" (planktivores) or "J0" (juvenile bass). Juveniles ("J0") is chosen by default.}
+
+\item{parts}{Logical, if FALSE (default), function returns the rate of change in the indicated state variable. If TRUE, function returns the rate of 'growth' (>=0) and the rate of 'consumption' (<=0) for the indicated state variable.}
 }
 \value{
-numeric value indicating temporal rate of change of F or J
+numeric value indicating temporal rate of change of F or J; or, if parts==TRUE, a named vector of length 2 indicate the growth and consumption components of the temporal rate of change of F or J.
 }
 \description{
 Temporal dynamics of F or J, but as a function of F or J and parameters (not other state variables)
