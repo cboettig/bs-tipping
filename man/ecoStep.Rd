@@ -4,8 +4,8 @@
 \alias{ecoStep}
 \title{Ecosystem Step}
 \usage{
-ecoStep(X, pars = c(qE = 1), fA = 2, cJA = 0.001, cJF = 0.5,
-  cFA = 0.3, vuln = 1, hide = 8, surv = 0.5, Fo = 100, DF = 0.1,
+ecoStep(X, pars = c(qE = 0.01), fA = 2, cJA = 0.1, cJF = 0.5,
+  cFA = 0.3, vuln = 80, hide = 80, surv = 0.6, Fo = 200, DF = 0.09,
   Zmix = 4, nZ = 10, rP = 3, Load = 0.6, mP = 0.1, Ho = 1,
   DH = 0.5, cHF = 0.1, alf = 0.3, cPH = 0.25)
 }

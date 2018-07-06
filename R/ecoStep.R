@@ -87,8 +87,8 @@
 # J2biom <- 0.05  # Convert J to kg / ha
 # F2biom <- 1  # Convert F to kg / ha
 
-ecoStep <- function(X, pars=c(qE=1), fA=2, cJA=1E-3, cJF=0.5, cFA=0.3, vuln=1, hide=8, surv=0.5, Fo=100, DF=0.1, Zmix=4, nZ=10, rP=3, Load=0.6, mP=0.1, Ho=1, DH=0.5, cHF=0.1, alf=0.3, cPH=0.25){
-	# sigma=0.1,  A2biom=0.2, J2biom=0.05, F2biom=1
+# ecoStep <- function(X, pars=c(qE=1), fA=2, cJA=1E-3, cJF=0.5, cFA=0.3, vuln=1, hide=8, surv=0.5, Fo=100, DF=0.1, Zmix=4, nZ=10, rP=3, Load=0.6, mP=0.1, Ho=1, DH=0.5, cHF=0.1, alf=0.3, cPH=0.25){
+ecoStep <- function(X, pars=c(qE=0.01), fA=2, cJA=0.1, cJF=0.5, cFA=0.3, vuln=80, hide=80, surv=0.6, Fo=200, DF=0.09, Zmix=4, nZ=10, rP=3, Load=0.6, mP=0.1, Ho=1, DH=0.5, cHF=0.1, alf=0.3, cPH=0.25){
 	with(as.list(c(X,pars)),{
 		# Plankton Dynamics
 		GAMMA <- function(z,Pbar) {
