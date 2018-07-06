@@ -8,10 +8,9 @@
 #' @param ... additional arguments to pass to \code{\link{fishStep}}
 #' @return numeric vector with roots
 #' @examples
-#' getRoot(c(A0=1, F0=1, J0=1), pars=c(qE=0.65))
-#' getRoot(c(A0=1000, F0=1, J0=1000), pars=c(qE=0.65))
-#' getRoot(c(A0=1, F0=1, J0=1), pars=c(qE=0.5))
-#' getRoot(c(A0=1000, F0=1, J0=1000), pars=c(qE=0.5))
+#' getRoot(c(A0=15, F0=50, J0=10), pars=c(qE=-0.02)) # stocking, high starting A
+#' getRoot(c(A0=2, F0=50, J0=5), pars=c(qE=-0.02)) # stocking, but start low A
+#' getRoot(c(A0=15, F0=1, J0=15), pars=c(qE=0.02)) # harvesting, start high A
 #' @export
 getRoot <- function(x, pars, maxiter=1E3, ...){
 	# make function check x and pars for qE
@@ -32,6 +31,39 @@ getRoot <- function(x, pars, maxiter=1E3, ...){
 	}, warning=function(w)c(A0=NA,F0=NA,J0=NA))
 }
 
+#' Get the Root of the Full Ecosystem Model in 5D
+#' 
+#' Numerically finds the roots of the ecosystem model given starting values (adults, [sun]fish, juveniles, herbivores, and phytoplankton) and parameter (harvest of adults, qE)
+#' 
+#' @param x a vector of length 5 with names A0 (adult bass), F0 (planktivorous fish),  J0 (juvenile bass), H0 (herbivorous zooplankton), and P0 (phytoplankton)
+#' @param pars vector of parameters to pass to model
+#' @param maxiter maximum number of iterations to use when finding root
+#' @param ... additional arguments to pass to \code{\link{ecoStep}}
+#' @return numeric vector with roots
+#' @examples
+#' getRoot5D(c(A0=15, F0=50, J0=10, H0=100, P0=100), pars=c(qE=-0.02)) # stocking, high starting A
+#' getRoot5D(c(A0=2, F0=50, J0=5, H0=100, P0=100), pars=c(qE=-0.02)) # stocking, but start low A
+#' getRoot5D(c(A0=15, F0=1, J0=15, H0=100, P0=100), pars=c(qE=0.02)) # harvesting, start high A
+#' @export
+getRoot5D <- function(x, pars, maxiter=1E3, ...){
+	# make function check x and pars for qE
+	# can be convenient if you want to pass 1 object that has both state variables and parameter
+	# such as when iterating throw rows of matrix with many combinations of states and parameters
+	# only does this for qE, not other potential parameters
+	if(missing(pars) | is.null(pars)){
+		pars <- c(qE=unname(x["qE"]))
+	}else{
+		if(!"qE"%in%names(pars)){
+			pars <- c(qE=unname(x["qE"]), pars)
+		}else{
+			pars <- c(pars)
+		}
+	}
+	tryCatch({
+		rootSolve::multiroot(f=ecoStep, start=x[c("A0","F0","J0","H0","P0")], parms=pars, maxiter=maxiter, ctol=1E-9, rtol=1E-9, atol=1E-9, ...)$root
+	}, warning=function(w)c(A0=NA,F0=NA,J0=NA,H0=NA,P0=NA))
+}
+
 
 #' Get the Root of the Fish Model in 2D
 #' 
@@ -42,11 +74,6 @@ getRoot <- function(x, pars, maxiter=1E3, ...){
 #' @param maxiter maximum number of iterations to use when finding root
 #' @param ... additional arguments to pass to \code{\link{fishStep2D}}
 #' @return numeric vector with roots
-#' @examples
-#' getRoot2D(c(F0=1, J0=1), pars=c(qE=0.65))
-#' getRoot2D(c(F0=1, J0=1000), pars=c(qE=0.65))
-#' getRoot2D(c(F0=1, J0=1), pars=c(qE=0.5))
-#' getRoot2D(c(F0=1, J0=1000), pars=c(qE=0.5))
 #' @export
 getRoot2D <- function(x, pars, maxiter=1E3, ...){
 	# make function check x and pars for qE

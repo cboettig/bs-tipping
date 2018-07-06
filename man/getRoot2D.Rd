@@ -21,10 +21,4 @@ numeric vector with roots
 \description{
 Numerically finds the roots of the fish model given starting values (juveniles and [sun]fish) and parameter (harvest of adults, qE)
 }
-\examples{
-getRoot2D(c(F0=1, J0=1), pars=c(qE=0.65))
-getRoot2D(c(F0=1, J0=1000), pars=c(qE=0.65))
-getRoot2D(c(F0=1, J0=1), pars=c(qE=0.5))
-getRoot2D(c(F0=1, J0=1000), pars=c(qE=0.5))
-}
 
