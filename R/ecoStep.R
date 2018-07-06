@@ -79,14 +79,14 @@
 
 # Fish Parameters
 # fA <- 2  # Fecundity of adult piscivore (2 in OLD)
-# cJA <- 1E-3 #0.1  # Density dependent mortality rate of juveniles
+# cJA <- 0.1 #1E-3   # Density dependent mortality rate of juveniles
 # cJF <- 0.5  # Consumption of juveniles by planktivores
 # cFA <- 0.3  # Consumption of planktivores by adult piscivores
-# vuln <- 1 #80  # Vulnerability coefficient (this is "v" in eco lett table/ equations)
-# hide <- 8 #80  # Hiding coefficient (this is "h" in eco lett table/ equations)
-# surv <- 0.5 #0.6  # Overwinter survivorship of adults
-# Fo <- 100  # Refuge density of planktivores  # 100 in OLD
-# DF <- 0.1 #0.09  # Diffusion parameter for planktivores
+# vuln <- 80 #1  # Vulnerability coefficient (this is "v" in eco lett table/ equations)
+# hide <- 80 #8  # Hiding coefficient (this is "h" in eco lett table/ equations)
+# surv <- 0.6 #0.5 #0.6  # Overwinter survivorship of adults
+# Fo <- 200 #100  # Refuge density of planktivores  # 100 in OLD
+# DF <- 0.09 # 0.1  # Diffusion parameter for planktivores
 # sigma <- 0.1 #0.05  # SD of additive noise for planktivores (0.1 in May 07)
 # A2biom <- 0.2  # Convert A to kg / ha
 # J2biom <- 0.05  # Convert J to kg / ha
@@ -107,7 +107,8 @@ ecoStep <- function(X, pars=c(qE=0.01), fA=2, cJA=0.1, cJF=0.5, cFA=0.3, vuln=80
 		
 		# Fish dynamics
 		#Arate <- (surv/nint)*J0 - qE*A0 - ((1-surv)/nint)*A0
-		Arate <- (surv)*J0 - qE*A0 - ((1-surv))*A0
+		# Arate <- (surv)*J0 - qE*A0 - ((1-surv))*A0
+		Arate <- (surv)*J0 - qE*A0 - (mA<-0.4)*A0
 		Frate <- DF*(Fo-F0) - cFA*F0*A0
 		Jpredloss <- (-cJA*J0*A0)-(cJF*vuln*J0*F0/(hide + vuln + cJF*F0) ) # Note this is negative
 	
