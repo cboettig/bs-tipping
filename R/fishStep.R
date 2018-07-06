@@ -11,16 +11,16 @@
 #' Compute the rate of change of the three fish state variables given initial conditions and parameters
 #' 
 #' @param X vector of length 3 with names A0, F0, and J0.  Indicates starting value of state variables
-#' @param pars a length 1 vector with name qE, indicating harvesting rate of adults
-#' @param fA  Fecundity of adult piscivore (2 in OLD)
-#' @param cJA Density dependent mortality rate of juveniles
-#' @param cJF Consumption of juveniles by planktivores
-#' @param cFA Consumption of planktivores by adult piscivores
-#' @param vuln Vulnerability coefficient (this is "v" in eco lett table/ equations)
-#' @param hide Hiding coefficient (this is "h" in eco lett table/ equations)
-#' @param surv Overwinter survivorship of adults
-#' @param Fo Refuge density of planktivores 
-#' @param DF Diffusion parameter for planktivores
+#' @param pars a named vector with at least qE, indicating harvesting rate of adults; can include other relevant parameters, see \code{\link{ecoStep}}
+# #' @param fA  Fecundity of adult piscivore (2 in OLD)
+# #' @param cJA Density dependent mortality rate of juveniles
+# #' @param cJF Consumption of juveniles by planktivores
+# #' @param cFA Consumption of planktivores by adult piscivores
+# #' @param vuln Vulnerability coefficient (this is "v" in eco lett table/ equations)
+# #' @param hide Hiding coefficient (this is "h" in eco lett table/ equations)
+# #' @param surv Overwinter survivorship of adults
+# #' @param Fo Refuge density of planktivores
+# #' @param DF Diffusion parameter for planktivores
 #' 
 #' @return named vector of length 3, with names corresponding to juvenile bass (J0), adult bass (A0), and sunfish (F0) abundances.
 #' @examples
@@ -72,7 +72,14 @@
 # J2biom <- 0.05  # Convert J to kg / ha
 # F2biom <- 1  # Convert F to kg / ha
 
+# fishStep <- function(X, pars=c(qE=1), fA=2, cJA=1E-3, cJF=0.5, cFA=0.3, vuln=1, hide=8, surv=0.5, Fo=100, DF=0.1){
 fishStep <- function(X, pars=c(qE=1), fA=2, cJA=1E-3, cJF=0.5, cFA=0.3, vuln=1, hide=8, surv=0.5, Fo=100, DF=0.1){
+	parsF <- unlist(formals(ecoStep)[c("fA", "cJA", "cJF", "cFA", "vuln", "hide", "surv", "Fo", "DF")])
+	if(missing(pars)){ # if a function requires qE, pars needs to be supplied (e.g., pars=c(qE=0.1))
+		pars <- parsF
+	}else{
+		pars <- c(pars, parsF[!names(parsF)%in%names(pars)])
+	}
 	# Ho=1, DH=0.5, cHF=0.1, alf=0.3, cPH=0.25, sigma=0.1,  A2biom=0.2, J2biom=0.05, F2biom=1
 	with(as.list(c(X,pars)),{
 		# Fish dynamics
