@@ -2,7 +2,7 @@
 % Please edit documentation in R/stability.R
 \name{stateMotion}
 \alias{stateMotion}
-\title{Functions of Motion}
+\title{Equations of Motion}
 \usage{
 stateMotion(state0, stateVar = c("A0", "F0", "J0"), pars)
 }
@@ -12,6 +12,9 @@ stateMotion(state0, stateVar = c("A0", "F0", "J0"), pars)
 \item{stateVar}{character, name of state variable whose motion you want}
 
 \item{pars}{named vector of parameters, needs to at least include qE}
+}
+\value{
+numeric scalar or vector indicating the rate of change of the state variable
 }
 \description{
 Provides the motion of each state variable (change in that variable as a function of itself and parameters)

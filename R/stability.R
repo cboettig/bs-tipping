@@ -262,13 +262,15 @@ stabClass <- function(qE, pars, func=fs2D, Jvals=seq(0,2E3,length.out=2), Fvals=
 }
 
 
-#' Functions of Motion
+#' Equations of Motion
 #' 
 #' Provides the motion of each state variable (change in that variable as a function of itself and parameters)
 #' 
 #' @param state0 numeric, value of a state variable (can be scalar or vector, not named)
 #' @param stateVar character, name of state variable whose motion you want
 #' @param pars named vector of parameters, needs to at least include qE
+#' 
+#' @return numeric scalar or vector indicating the rate of change of the state variable
 #' 
 #' @note These functions should essentially replace \code{\link{dFJ_dt_1state}}. The A motion function was not an option in \code{\link{dFJ_dt_1state}}, though. Both A motion and J motion are done without much algebra or substitution; however, getting the equation/ function for F motion requires doing some alebraic substitution to get the A state variable to cancel out. Dividing by A and letting it cancel probably involves some extra assumption that might make the F motion equation/ function invalid in certain areas of state-space.
 #' 
@@ -288,7 +290,7 @@ stateMotion <- function(state0, stateVar=c("A0","F0","J0"), pars){
 			surv*Jhat/(qE+1-surv)
 		}
 		Afun2 <- function(Fhat){ # gives A as a function of F and parameters, required some algebra first, though
-			surv*fA/(cJA*(qE+1-s)) - (cJF*vuln*Fhat)/(cJA*(hide+vuln+cJF*Fhat))
+			surv*fA/(cJA*(qE+1-surv)) - (cJF*vuln*Fhat)/(cJA*(hide+vuln+cJF*Fhat))
 		}
 		Ffun <- function(Ahat){ # gives F as a function of A and parameters
 			DF*Fo/(cFA*Ahat+DF)
@@ -322,27 +324,5 @@ stateMotion <- function(state0, stateVar=c("A0","F0","J0"), pars){
 	})
 	return(unname(out))
 }
-# stateMotion(state0=800, pars=c(qE=1.0))
-# stateMotion(state0=1:3, pars=c(qE=1.0))
-# curve(stateMotion(state0=x, pars=c(qE=1.0)), from=0, to=50)
-#
-# qevals <- seq(1, 20, length=4)
-# par(mfrow=c(2,2))
-# for(i in 1:length(qevals)){
-# 	curve(stateMotion(state0=x, pars=c(qE=qevals[i])), from=0, to=100)
-# 	mtext(paste0('qE=',round(qevals[i],2)), side=3, adj=0.05, font=2)
-# }
-#
-# curve(stateMotion(state0=x, pars=c(qE=1)), from=0, to=1100)
-# curve(stateMotion(state0=x, pars=c(qE=2)), from=0, to=1100)
-# curve(stateMotion(state0=x, pars=c(qE=10)), from=0, to=100)
-# curve(stateMotion(state0=x, pars=c(qE=20)), from=0, to=100)
-#
-# curve(stateMotion(state0=x, pars=c(qE=0.3)), from=0, to=1100)
-# curve(stateMotion(state0=x, pars=c(qE=0.4)), from=0, to=1100)
-# curve(stateMotion(state0=x, pars=c(qE=0.8)), from=0, to=1100)
-# curve(stateMotion(state0=x, pars=c(qE=1.2)), from=0, to=1100)
-
-
 
 
