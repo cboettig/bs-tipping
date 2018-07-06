@@ -73,7 +73,7 @@
 # F2biom <- 1  # Convert F to kg / ha
 
 # fishStep <- function(X, pars=c(qE=1), fA=2, cJA=1E-3, cJF=0.5, cFA=0.3, vuln=1, hide=8, surv=0.5, Fo=100, DF=0.1){
-fishStep <- function(X, pars=c(qE=1), fA=2, cJA=1E-3, cJF=0.5, cFA=0.3, vuln=1, hide=8, surv=0.5, Fo=100, DF=0.1){
+fishStep <- function(X, pars=c(qE=1)){
 	parsF <- unlist(formals(ecoStep)[c("fA", "cJA", "cJF", "cFA", "vuln", "hide", "surv", "Fo", "DF")])
 	if(missing(pars)){ # if a function requires qE, pars needs to be supplied (e.g., pars=c(qE=0.1))
 		pars <- parsF
@@ -84,7 +84,8 @@ fishStep <- function(X, pars=c(qE=1), fA=2, cJA=1E-3, cJF=0.5, cFA=0.3, vuln=1, 
 	with(as.list(c(X,pars)),{
 		# Fish dynamics
 		#Arate <- (surv/nint)*J0 - qE*A0 - ((1-surv)/nint)*A0
-		Arate <- (surv)*J0 - qE*A0 - ((1-surv))*A0
+		# Arate <- (surv)*J0 - qE*A0 - ((1-surv))*A0
+		Arate <- (surv)*J0 - qE*A0 - 0.6*A0
 		Frate <- DF*(Fo-F0) - cFA*F0*A0
 		Jpredloss <- (-cJA*J0*A0)-(cJF*vuln*J0*F0/(hide + vuln + cJF*F0) ) # Note this is negative
 	

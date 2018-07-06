@@ -4,8 +4,7 @@
 \alias{fishStep}
 \title{Fish Step}
 \usage{
-fishStep(X, pars = c(qE = 1), fA = 2, cJA = 0.001, cJF = 0.5,
-  cFA = 0.3, vuln = 1, hide = 8, surv = 0.5, Fo = 100, DF = 0.1)
+fishStep(X, pars = c(qE = 1))
 }
 \arguments{
 \item{X}{vector of length 3 with names A0, F0, and J0.  Indicates starting value of state variables}
