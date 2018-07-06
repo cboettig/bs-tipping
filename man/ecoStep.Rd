@@ -6,8 +6,10 @@
 \usage{
 ecoStep(X, pars = c(qE = 0.01), fA = 2, cJA = 0.1, cJF = 0.5,
   cFA = 0.3, vuln = 80, hide = 80, surv = 0.6, Fo = 200, DF = 0.09,
-  Zmix = 4, nZ = 10, rP = 3, Load = 0.6, mP = 0.1, Ho = 1,
-  DH = 0.5, cHF = 0.1, alf = 0.3, cPH = 0.25)
+  Zmix = 4, nZ = 10, rP = 3, Load = 0.6, mP = 0.1, Ho = 4,
+  DH = 0.5, cHF = 0.1, alf = 0.3, cPH = 0.25, I0 = 300,
+  k_sat = 0.012, k_inh = 0.004, DOC = 5, eps0 = 0.0213 + 0.0514 * DOC,
+  epsP = 0.0177)
 }
 \arguments{
 \item{X}{vector of length 3 with names P0 (initial phytoplankton), H0 (initial herbivore [zooplankton]), A0 (adult piscivorous fish), F0 (planktivorous fish), and J0 (juvenile piscivores).  Indicates starting value of state variables}
@@ -56,10 +58,20 @@ ecoStep(X, pars = c(qE = 0.01), fA = 2, cJA = 0.1, cJF = 0.5,
 
 \item{k_sat, k_inh}{photosynthesis-irradiance parameters}
 
+\item{k_inh}{per microEinsteins}
+
 \item{DOC, eps0, epsP}{Light extinction parameters from Carpenter et al. L&O 1998; DOC is dissolved organic carbon; eps are in units per m}
+
+\item{eps0, epsP}{extinction coefficient, per m}
+
+\item{I0}{surface irradiance}
+
+\item{k_sat}{per microEinsteins m-1 s-1}
+
+\item{DOC}{dissolved organic carbon, g m-3}
 }
 \value{
-named vector of length 3, with names corresponding to juvenile bass (J0), adult bass (A0), and sunfish (F0) abundances.
+named vector of length 5, with names corresponding to juvenile bass (J0), adult bass (A0), and sunfish (F0) abundances.
 }
 \description{
 Compute the rate of change of the five ecosystem state variables given initial conditions and parameters
@@ -68,6 +80,6 @@ Compute the rate of change of the five ecosystem state variables given initial c
 \code{F} are referred to as planktivorous fish, but they do feed on the juvenile piscivores (\code{J}).
 }
 \examples{
-ecoStep(X=c(A0=1.5,F0=25,J0=2), pars=c(qE=0.1))
+ecoStep(X=c(A0=1.5,F0=25,J0=2, H0=1, P0=1), pars=c(qE=0.01))
 }
 

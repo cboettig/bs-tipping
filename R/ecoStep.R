@@ -34,12 +34,17 @@
 #' @param cHF consumption rate by planktivore (of zooplankton)
 #' @param alf conversion efficiency of consumed phytoplankton to zooplankton
 #' @param cPH consumption rate of phytoplankton by zooplankton
+#' @param I0 surface irradiance
+#' @param k_sat per microEinsteins m-1 s-1
+#' @param k_inh per microEinsteins
+#' @param DOC dissolved organic carbon, g m-3
+#' @param eps0,epsP extinction coefficient, per m
 #' 
 #' @note \code{F} are referred to as planktivorous fish, but they do feed on the juvenile piscivores (\code{J}).
 #' 
-#' @return named vector of length 3, with names corresponding to juvenile bass (J0), adult bass (A0), and sunfish (F0) abundances.
+#' @return named vector of length 5, with names corresponding to juvenile bass (J0), adult bass (A0), and sunfish (F0) abundances.
 #' @examples
-#' ecoStep(X=c(A0=1.5,F0=25,J0=2), pars=c(qE=0.1))
+#' ecoStep(X=c(A0=1.5,F0=25,J0=2, H0=1, P0=1), pars=c(qE=0.01))
 #' @export
 
 # Phytoplankton Parameters
@@ -88,14 +93,14 @@
 # F2biom <- 1  # Convert F to kg / ha
 
 # ecoStep <- function(X, pars=c(qE=1), fA=2, cJA=1E-3, cJF=0.5, cFA=0.3, vuln=1, hide=8, surv=0.5, Fo=100, DF=0.1, Zmix=4, nZ=10, rP=3, Load=0.6, mP=0.1, Ho=1, DH=0.5, cHF=0.1, alf=0.3, cPH=0.25){
-ecoStep <- function(X, pars=c(qE=0.01), fA=2, cJA=0.1, cJF=0.5, cFA=0.3, vuln=80, hide=80, surv=0.6, Fo=200, DF=0.09, Zmix=4, nZ=10, rP=3, Load=0.6, mP=0.1, Ho=1, DH=0.5, cHF=0.1, alf=0.3, cPH=0.25){
+ecoStep <- function(X, pars=c(qE=0.01), fA=2, cJA=0.1, cJF=0.5, cFA=0.3, vuln=80, hide=80, surv=0.6, Fo=200, DF=0.09, Zmix=4, nZ=10, rP=3, Load=0.6, mP=0.1, Ho=4, DH=0.5, cHF=0.1, alf=0.3, cPH=0.25, I0=300, k_sat=0.012, k_inh=0.004, DOC=5, eps0=0.0213+0.0514*DOC, epsP=0.0177){
 	with(as.list(c(X,pars)),{
 		# Plankton Dynamics
+		Fmax <- ((k_sat + k_inh)/k_sat)*exp(-(k_inh/k_sat)*log(k_inh/(k_sat+k_inh)))
 		GAMMA <- function(z,Pbar) {
 			Iz <- I0*exp(-z*(eps0+epsP*Pbar))
 			rate <- (1/Fmax)*(1 - exp(-k_sat*Iz))*exp(-k_inh*Iz)
 		}
-		Fmax <- ((k_sat + k_inh)/k_sat)*exp(-(k_inh/k_sat)*log(k_inh/(k_sat+k_inh)))
 		dZ <- Zmix/nZ
 		Zvec <- seq(0,Zmix, by=dZ)
 		
@@ -132,7 +137,7 @@ ecoStep <- function(X, pars=c(qE=0.01), fA=2, cJA=0.1, cJF=0.5, cFA=0.3, vuln=80
 		# Construct output vector
 		# simOut <- c("At"=A1, "Ft"=F1, "Jt"=J1, "Ht"=H1, "Pt"=P1)
 		# SimList <- list(A1,F1,J1,H1,P1)
-		dXdt <- c(dP_dt=Prate, dH_dt=Hrate, dA_dt=Arate, dF_dt=Frate, dJ_dt=Jrate)
+		dXdt <- c(dA_dt=Arate, dF_dt=Frate, dJ_dt=Jrate, dP_dt=Prate, dH_dt=Hrate)
 		return(dXdt)
 		# pmax(dXdt, 0.1-c(A0,F0,J0)) # use this to make it so that the rate doesn't set a state variable below 0.1 ... but use in simulation, not in this function
 		
