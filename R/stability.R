@@ -262,4 +262,87 @@ stabClass <- function(qE, pars, func=fs2D, Jvals=seq(0,2E3,length.out=2), Fvals=
 }
 
 
+#' Functions of Motion
+#' 
+#' Provides the motion of each state variable (change in that variable as a function of itself and parameters)
+#' 
+#' @param state0 numeric, value of a state variable (can be scalar or vector, not named)
+#' @param stateVar character, name of state variable whose motion you want
+#' @param pars named vector of parameters, needs to at least include qE
+#' 
+#' @note These functions should essentially replace \code{\link{dFJ_dt_1state}}. The A motion function was not an option in \code{\link{dFJ_dt_1state}}, though. Both A motion and J motion are done without much algebra or substitution; however, getting the equation/ function for F motion requires doing some alebraic substitution to get the A state variable to cancel out. Dividing by A and letting it cancel probably involves some extra assumption that might make the F motion equation/ function invalid in certain areas of state-space.
+#' 
+#' @export
+stateMotion <- function(state0, stateVar=c("A0","F0","J0"), pars){
+	stateVar <- match.arg(stateVar)
+	parsF <- unlist(formals(ecoStep)[c("fA", "cJA", "cJF", "cFA", "vuln", "hide", "surv", "Fo", "DF")])
+	if(missing(pars)){ # if a function requires qE, pars needs to be supplied (e.g., pars=c(qE=0.1))
+		pars <- parsF
+	}else{
+		pars <- c(pars, parsF[!names(parsF)%in%names(pars)])
+	}
+	
+	out <- with(as.list(pars), {
+		# Functions that calculate the state variable value
+		Afun <- function(Jhat){ # gives A as a function of J and parameters
+			surv*Jhat/(qE+1-surv)
+		}
+		Afun2 <- function(Fhat){ # gives A as a function of F and parameters, required some algebra first, though
+			surv*fA/(cJA*(qE+1-s)) - (cJF*vuln*Fhat)/(cJA*(hide+vuln+cJF*Fhat))
+		}
+		Ffun <- function(Ahat){ # gives F as a function of A and parameters
+			DF*Fo/(cFA*Ahat+DF)
+		}
+		Jfun <- function(Ahat, Fhat){ # gives J as a function of A, F, and parameters
+			fA*Ahat/(cJA*Ahat + surv + (cJF*vuln*Fhat)/(hide+vuln+cJF*Fhat))
+			# f*Ahat / ( cJA * Ahat + cJF* vuln * Fhat / (hide + vuln + cJF * Fhat)   ) # what Carl has; dropping the surv term adds a lot more curvature to the A motion equation, so it's easier to produce alternative stable states. However, this was tested with the Carpenter et al. 2008 Ecology Letter parameterization, but that paper used the continuous + discrete version of the model.
+		}
+		
+		# Functions that calculate the change in the state variable as a function of itself and parameters
+		Amotion <- function(Ahat){ # gives dA/dt as a function of A and parameters
+			Jhat <- Jfun(Ahat=Ahat, Fhat=Ffun(Ahat=Ahat))
+			(surv)*Jhat - qE*Ahat - ((1-surv))*Ahat
+			# (surv)*Jhat - qE*Ahat - (mA<-0)*Ahat # what carl has
+		}
+		Fmotion <- function(Fhat){ # gives dF/dt as a function of F and parameters
+			Ahat <- Afun2(Fhat=Fhat) # note that Afun2 required doing some algebra first, and might be making unspecified assumptions to be valid; careful!
+			DF*(Fo-Fhat) - cFA*Fhat*Ahat
+		}
+		Jmotion <- function(Jhat){ # gives dJ/dt as a function of J and parameters
+			Ahat <- Afun(Jhat=Jhat)
+			Fhat <- Ffun(Ahat=Ahat)
+			Jpredloss <- (-cJA*Jhat*Ahat)-(cJF*vuln*Jhat*Fhat/(hide + vuln + cJF*Fhat) )
+			(fA)*Ahat + Jpredloss - (surv)*Jhat
+		}
+		
+		# select the appropriate motion function, and run it on the provided state value
+		# motion <- switch(stateVar, "A0"=match.fun("Amotion"), "F0"=match.fun("Fmotion"), "J0"=match.fun("Jmotion"))
+		motion <- switch(stateVar, "A0"=Amotion, "F0"=Fmotion, "J0"=Jmotion)
+		motion(state0)
+	})
+	return(unname(out))
+}
+# stateMotion(state0=800, pars=c(qE=1.0))
+# stateMotion(state0=1:3, pars=c(qE=1.0))
+# curve(stateMotion(state0=x, pars=c(qE=1.0)), from=0, to=50)
+#
+# qevals <- seq(1, 20, length=4)
+# par(mfrow=c(2,2))
+# for(i in 1:length(qevals)){
+# 	curve(stateMotion(state0=x, pars=c(qE=qevals[i])), from=0, to=100)
+# 	mtext(paste0('qE=',round(qevals[i],2)), side=3, adj=0.05, font=2)
+# }
+#
+# curve(stateMotion(state0=x, pars=c(qE=1)), from=0, to=1100)
+# curve(stateMotion(state0=x, pars=c(qE=2)), from=0, to=1100)
+# curve(stateMotion(state0=x, pars=c(qE=10)), from=0, to=100)
+# curve(stateMotion(state0=x, pars=c(qE=20)), from=0, to=100)
+#
+# curve(stateMotion(state0=x, pars=c(qE=0.3)), from=0, to=1100)
+# curve(stateMotion(state0=x, pars=c(qE=0.4)), from=0, to=1100)
+# curve(stateMotion(state0=x, pars=c(qE=0.8)), from=0, to=1100)
+# curve(stateMotion(state0=x, pars=c(qE=1.2)), from=0, to=1100)
+
+
+
 
