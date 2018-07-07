@@ -40,7 +40,10 @@ Imports:
     methods,
     phaseR,
     deSolve,
-    rootSolve
+    rootSolve,
+    patchwork
 Suggests:
     tidyverse
 RoxygenNote: 5.0.1
+
+Remotes: thomasp85/patchwork
