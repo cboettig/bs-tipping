@@ -1,6 +1,7 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^pkgBuild/.*$
+^notebook/.*$
 ^paper/.*$
 ^drone.yml/.*$
 ^\.travis.yml/.*$

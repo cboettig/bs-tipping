@@ -10,4 +10,5 @@ update_dependencies <- function(){
 	devtools::use_package("methods", type="Imports")
 	devtools::use_package("rootSolve", type="Imports")
 	devtools::use_package("deSolve", type="Imports")
+	devtools::use_package("phaseR", type="Imports")
 }

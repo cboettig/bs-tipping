@@ -1,0 +1,130 @@
+---
+title: "Tipping"
+output: pdf_document
+---
+
+
+
+```{r include=FALSE}
+knitr::opts_chunk$set(message=FALSE, warning=FALSE, echo=FALSE, fig.height = 3)
+```
+
+```{r}
+library(tidyverse)
+# install_github("thomasp85/patchwork")
+library(patchwork)
+```
+
+# May Model
+
+May's classic bistable model can be written as follows:
+
+
+$$\frac{dX_{t}}{dt} =  \underbrace{X_t r \left(1 -\frac{X_t}{K} \right)}_{\textrm{Vegitation growth}}  - \underbrace{\frac{a X_t ^ Q}{X_t^ Q + H ^ Q}}_{\textrm{Vegitation consumption}} + \xi_t,$$
+
+We sometimes call the $dX/dt$ equation the "equation of motion".  Note that it can be thought of as the difference between two separate curves, growth and consumption.  It's often easier to see how we can create a bifurcation when we plot these two curves separately.  Here we consider the plot of the separate curves, the overall equation of motion, and the so-called "Potential Well" or ball-in-cup diagram, all as a function of the state, $X_t$.  Recall that if the equation of motion is defined as $\frac{dX_{t}}{dt} = f(X_t)$ then the "potential" is defined as: $U(X) = - \int_0^X f(Y) dY$.
+
+
+Let's compute some numbers with some example parameters: 
+
+```{r}
+p <- list(r = .5, K = 2, Q = 5, H = .38, sigma = .04, a = 0.245)
+
+
+theory <- 
+  tibble(x= seq(0,2, length.out = 100)) %>%
+  # Growth and consumption parts separately
+  mutate(growth = x * p$r * (1 - x / p$K), 
+         consumption = p$a * x ^ p$Q / (x^p$Q + p$H^p$Q)) %>%
+  ## 
+  mutate(x_dot = growth - consumption) %>%
+  ## "Potential" is the negative integral
+  mutate(potential = - cumsum(growth - consumption)) 
+
+```
+
+
+```{r }
+p1 <- theory %>% select(x, growth, consumption) %>%
+  gather(curve, y, -x) %>%
+  ggplot(aes(x, y, col=curve)) +
+  geom_line(lwd=1) +
+  labs(y = bquote(dX[t]/dt), x = bquote(X[t])) +
+  theme(legend.position = c(0.8, 0.2))
+```
+
+
+
+```{r }
+p2 <- theory %>% select(x, y = x_dot) %>%
+  ggplot(aes(x, y)) +
+  geom_line(lwd=1) + 
+  coord_cartesian(xlim=c(-.1, 1.5)) + 
+  geom_hline(yintercept=0, lty=3) + 
+  labs(y = bquote(dX[t]/dt), x = bquote(X[t]))
+```
+
+
+
+```{r}
+p3 <- theory %>%
+  ggplot(aes(x, potential)) + 
+  geom_line(lwd=1) + 
+  coord_cartesian(xlim=c(0,1.6), ylim=c(-1.15,-0.9))
+```
+
+```{r}
+p1 + p2 + p3
+```
+
+
+
+# Tipping: 
+
+Note it is easy to observe how increasing the parameter `a` slightly causes this to "tip":
+
+```{r}
+p <- list(r = .5, K = 2, Q = 5, H = .38, sigma = .04, a = 0.255)
+
+
+theory <- 
+  tibble(x= seq(0,2, length.out = 100)) %>%
+  # Growth and consumption parts separately
+  mutate(growth = x * p$r * (1 - x / p$K), 
+         consumption = p$a * x ^ p$Q / (x^p$Q + p$H^p$Q)) %>%
+  ## 
+  mutate(x_dot = growth - consumption) %>%
+  ## "Potential" is the negative integral
+  mutate(potential = - cumsum(growth - consumption)) 
+
+```
+
+
+```{r }
+p1 <- theory %>% select(x, growth, consumption) %>%
+  gather(curve, y, -x) %>%
+  ggplot(aes(x, y, col=curve)) +
+  geom_line(lwd=1) +
+  labs(y = bquote(dX[t]/dt), x = bquote(X[t]))+
+  theme(legend.position = c(0.8, 0.2))
+```
+
+```{r }
+p2 <- theory %>% select(x, y = x_dot) %>%
+  ggplot(aes(x, y)) +
+  geom_line(lwd=1) + 
+  coord_cartesian(xlim=c(-.1, 1.5)) + 
+  geom_hline(yintercept=0, lty=3) + 
+  labs(y = bquote(dX[t]/dt), x = bquote(X[t]))
+```
+
+```{r}
+p3 <- theory %>%
+  ggplot(aes(x, potential)) + 
+  geom_line(lwd=1) + labs(subtitle = "Potential Well")
+```
+
+
+```{r}
+p1 + p2 + p3
+```

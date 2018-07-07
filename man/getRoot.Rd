@@ -2,13 +2,12 @@
 % Please edit documentation in R/getRoot.R
 \name{getRoot}
 \alias{getRoot}
-\title{Get the Root of the Fish Model
-Finds the roots of the fish model given starting values (adults, [sun]fish, and juveniles) and parameter (harvest of adults, qE)}
+\title{Get the Root of the Fish Model}
 \usage{
 getRoot(x, pars, maxiter = 1000, ...)
 }
 \arguments{
-\item{x}{a vector of length 3 with names A0 (water P), F0 (mud P), and J0 (P loading)}
+\item{x}{a vector of length 3 with names A0 (adult bass), F0 (planktivorous fish), and J0 (juvenile bass)}
 
 \item{pars}{vector of parameters to pass to model}
 
@@ -20,10 +19,11 @@ getRoot(x, pars, maxiter = 1000, ...)
 numeric vector with roots
 }
 \description{
-Get the Root of the Fish Model
-Finds the roots of the fish model given starting values (adults, [sun]fish, and juveniles) and parameter (harvest of adults, qE)
+Numerically finds the roots of the fish model given starting values (adults, [sun]fish, and juveniles) and parameter (harvest of adults, qE)
 }
 \examples{
-getRoot(c(A0=1, F0=1, J0=1), pars=c(qE=0.5))
+getRoot(c(A0=15, F0=50, J0=10), pars=c(qE=-0.02)) # stocking, high starting A
+getRoot(c(A0=2, F0=50, J0=5), pars=c(qE=-0.02)) # stocking, but start low A
+getRoot(c(A0=15, F0=1, J0=15), pars=c(qE=0.02)) # harvesting, start high A
 }
 

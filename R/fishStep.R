@@ -11,16 +11,16 @@
 #' Compute the rate of change of the three fish state variables given initial conditions and parameters
 #' 
 #' @param X vector of length 3 with names A0, F0, and J0.  Indicates starting value of state variables
-#' @param pars a length 1 vector with name qE, indicating harvesting rate of adults
-#' @param fA  Fecundity of adult piscivore (2 in OLD)
-#' @param cJA Density dependent mortality rate of juveniles
-#' @param cJF Consumption of juveniles by planktivores
-#' @param cFA Consumption of planktivores by adult piscivores
-#' @param vuln Vulnerability coefficient (this is "v" in eco lett table/ equations)
-#' @param hide Hiding coefficient (this is "h" in eco lett table/ equations)
-#' @param surv Overwinter survivorship of adults
-#' @param Fo Refuge density of planktivores 
-#' @param DF Diffusion parameter for planktivores
+#' @param pars a named vector with at least qE, indicating harvesting rate of adults; can include other relevant parameters, see \code{\link{ecoStep}}
+# #' @param fA  Fecundity of adult piscivore (2 in OLD)
+# #' @param cJA Density dependent mortality rate of juveniles
+# #' @param cJF Consumption of juveniles by planktivores
+# #' @param cFA Consumption of planktivores by adult piscivores
+# #' @param vuln Vulnerability coefficient (this is "v" in eco lett table/ equations)
+# #' @param hide Hiding coefficient (this is "h" in eco lett table/ equations)
+# #' @param surv Overwinter survivorship of adults
+# #' @param Fo Refuge density of planktivores
+# #' @param DF Diffusion parameter for planktivores
 #' 
 #' @return named vector of length 3, with names corresponding to juvenile bass (J0), adult bass (A0), and sunfish (F0) abundances.
 #' @examples
@@ -72,12 +72,20 @@
 # J2biom <- 0.05  # Convert J to kg / ha
 # F2biom <- 1  # Convert F to kg / ha
 
-fishStep <- function(X, pars=c(qE=1), fA=2, cJA=1E-3, cJF=0.5, cFA=0.3, vuln=1, hide=8, surv=0.5, Fo=100, DF=0.1){
+# fishStep <- function(X, pars=c(qE=1), fA=2, cJA=1E-3, cJF=0.5, cFA=0.3, vuln=1, hide=8, surv=0.5, Fo=100, DF=0.1){
+fishStep <- function(X, pars=c(qE=1)){
+	parsF <- unlist(formals(ecoStep)[c("fA", "cJA", "cJF", "cFA", "vuln", "hide", "surv", "Fo", "DF")])
+	if(missing(pars)){ # if a function requires qE, pars needs to be supplied (e.g., pars=c(qE=0.1))
+		pars <- parsF
+	}else{
+		pars <- c(pars, parsF[!names(parsF)%in%names(pars)])
+	}
 	# Ho=1, DH=0.5, cHF=0.1, alf=0.3, cPH=0.25, sigma=0.1,  A2biom=0.2, J2biom=0.05, F2biom=1
 	with(as.list(c(X,pars)),{
 		# Fish dynamics
 		#Arate <- (surv/nint)*J0 - qE*A0 - ((1-surv)/nint)*A0
-		Arate <- (surv)*J0 - qE*A0 - ((1-surv))*A0
+		# Arate <- (surv)*J0 - qE*A0 - ((1-surv))*A0
+		Arate <- (surv)*J0 - qE*A0 - 0.6*A0
 		Frate <- DF*(Fo-F0) - cFA*F0*A0
 		Jpredloss <- (-cJA*J0*A0)-(cJF*vuln*J0*F0/(hide + vuln + cJF*F0) ) # Note this is negative
 	
@@ -113,4 +121,103 @@ fishStep <- function(X, pars=c(qE=1), fA=2, cJA=1E-3, cJF=0.5, cFA=0.3, vuln=1, 
 		
 	})
 	
+}
+
+#' Two-dimensional fish time step
+#' 
+#' Rate of change in planktivores and juvenile bass per time step
+#' 
+#' @param X length 2 named vector of state variables. Names are should be J0 (juveniles) and F0 (planktivores)
+#' @param pars a named vector of model parameters; in partiular, qE is harvest
+#' @param ... Optional model parameters (e.g., see arguments in \code{\link{ecoStep}}), or other arguments to be passed to future methods. 
+#' 
+#' @return length-2 named vector (J0 and F0) indicating the rate of change per unit time in the abundances of juvenile bass (J0) and planktivores (F0).
+#' 
+#' @note \code{pars} and \code{...} are largely redundant. Their separation is merely for compatability with other functions, or for organizational purposes. The intended use is that parameters in \code{pars} correspond to parameters varied systematically to effect stability properties, whereas parameters specified through \code{...} are being altered for exploration purposes, but would generally not be supplied because the defaults in \code{\link{ecoStep}} are suitable.
+#' 
+#' @seealso \code{\link{fishStep}}, \code{\link{ecoStep}}
+#' 
+#' @examples
+#' # set up parameter, initials, roots
+#' p <- c(qE=0.65) # harvest rate
+#' state1 <- c(A0=1, F0=1, J0=1) # initial values
+#' state2 <- c(A0=1E3, F0=1, J0=1E3) # alternate initials
+#' r1 <- getRoot(state1, pars=p)[c("J0","F0")] # first root
+#' r2 <- getRoot(state2, pars=p)[c("J0","F0")] # second root (alt stbl states)
+#' 
+#' # test dState/dt at root
+#' fishStep2D(r1, pars=p) # 0 at lower root
+#' fishStep2D(r2, pars=p) # 0 at upper root
+#' 
+#' # test dState/dt near, but not at, root
+#' fishStep2D(r1+rnorm(2), pars=p) # non-0 away from root
+#' fishStep2D(r2+rnorm(2), pars=p) # non-0 away from root
+#' 
+#' # test dState/dt at r1 and r2, but different qE
+#' fishStep2D(r1) # qE defaults to 1; r1 ~0 for qE=1 & =0.65
+#' fishStep2D(r2) # r2 ~0 for qE=0.65, not for qE=1
+#' @export
+fishStep2D <- function(X, pars=c(qE=1), ...){
+	parsF <- unlist(formals(ecoStep)[c("fA", "cJA", "cJF", "cFA", "vuln", "hide", "surv", "Fo", "DF")])
+	
+	dots <- list(...)
+	
+	parsFDots <- parsF
+	
+	if(length(dots)>0){
+		dots_in_formals <- names(dots)%in%names(parsF)
+		if(any(dots_in_formals)){
+			pars_dots <- dots[dots_in_formals]
+			parsFDots <- c(pars_dots, parsF[!names(parsF)%in%names(pars_dots)])
+		}
+	}
+	
+	if(missing(pars)){ # if a function requires qE, pars needs to be supplied (e.g., pars=c(qE=0.1))
+		message("arg 'pars' missing, setting qE to 1")
+		pars <- c(qE=1, parsFDots)
+	}else{
+		pars <- c(pars, parsFDots[!names(parsFDots)%in%names(pars)])
+	}
+	
+	# for(j in 1:length(c(X,pars))){assign(names(c(X,pars))[j], c(X,pars)[j])}
+	out <- with(as.list(c(X,pars)), {
+		qE <- pars['qE']
+		a <- cFA
+		x <- cJA
+		z <- cJF
+		f <- fA
+		v <- vuln
+		h <- hide
+		s <- surv
+		d <- DF
+		
+		Q <- 1/(qE+1-s)
+		dF_dt <- d*(Fo - F0) - a*F0*(s*J0*Q)
+		dJ_dt <- f*(s*J0*Q) - x*J0*(s*J0*Q) - (z*v*J0*F0)/(h+v+z*F0) - s*J0
+		
+		dVal <- c(J0=unname(dJ_dt), F0=unname(dF_dt))
+		dVal
+		
+	})
+	# rm(list=c(c(X,pars), "qE", "a", "x", "z", "f", "v", "h", "s", "d", "Q", "dF_dt", "dJ_dt", "dVal"))
+	
+	# return(unname(out))
+	return(out)
+}
+
+
+#' Wrapper for model when finding stability properties
+#' 
+#' Wrapper for 2D version of model for finding stability properties using \code{phaseR} package
+#' 
+#' @param t time, for compatibility with \code{phaseR} and \code{deSolve} and \code{rootSolve}
+#' @param y state variables as in \code{\link{fishStep2D}}
+#' @param parameters same as \code{pars} in \code{\link{fishStep2D}}; had to be called 'parameters' for compatibility with \code{phaseR}
+#' @param ... other arguments to be passed to \code{\link{fishStep2D}}
+#' @return length-1 list of length-2 named numeric vector indicating rate of change of state variables
+#' @seealso \code{\link{fishStep2D}}
+#' @export
+fs2D <- function(t, y, parameters, ...){
+	names(y) <- c("J0","F0")
+	list(fishStep2D(y, pars=parameters, ...))
 }

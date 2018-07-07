@@ -4,31 +4,12 @@
 \alias{fishStep}
 \title{Fish Step}
 \usage{
-fishStep(X, pars = c(qE = 1), fA = 2, cJA = 0.001, cJF = 0.5,
-  cFA = 0.3, vuln = 1, hide = 8, surv = 0.5, Fo = 100, DF = 0.1)
+fishStep(X, pars = c(qE = 1))
 }
 \arguments{
 \item{X}{vector of length 3 with names A0, F0, and J0.  Indicates starting value of state variables}
 
-\item{pars}{a length 1 vector with name qE, indicating harvesting rate of adults}
-
-\item{fA}{Fecundity of adult piscivore (2 in OLD)}
-
-\item{cJA}{Density dependent mortality rate of juveniles}
-
-\item{cJF}{Consumption of juveniles by planktivores}
-
-\item{cFA}{Consumption of planktivores by adult piscivores}
-
-\item{vuln}{Vulnerability coefficient (this is "v" in eco lett table/ equations)}
-
-\item{hide}{Hiding coefficient (this is "h" in eco lett table/ equations)}
-
-\item{surv}{Overwinter survivorship of adults}
-
-\item{Fo}{Refuge density of planktivores}
-
-\item{DF}{Diffusion parameter for planktivores}
+\item{pars}{a named vector with at least qE, indicating harvesting rate of adults; can include other relevant parameters, see \code{\link{ecoStep}}}
 }
 \value{
 named vector of length 3, with names corresponding to juvenile bass (J0), adult bass (A0), and sunfish (F0) abundances.
