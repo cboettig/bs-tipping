@@ -122,10 +122,10 @@ opts_chunk$set(
 #+ setup
 set.seed(42)
 qE <- -0.001 #0.02
-qE_end <- 0.001 #-5#-0.025
+qE_end <- 0.001#/20 #-5#-0.025
 
 dt <- 0.01 # 0.01
-nYears <- 1020
+nYears <- 1020#/20
 
 noise_coeff <- c(0.01, 0.01, 0.01, 0.01, 0.01)
 
@@ -202,6 +202,7 @@ for(i in 1:length(qevals)){
 }
 #' As with the adults, the second stable node appears when qE>0
 #'   
+#'   
 #' \FloatBarrier  
 #'   
 #' ***  
@@ -215,13 +216,26 @@ for(i in 1:length(qevals)){
 	abline(h=0, lty=2)
 	mtext(paste0("qE=",round(qevals[i],2)), side=3, line=0, adj=0.05, font=2)
 }
-#' Unfortuneately, this state variable only shows a trivial stable node and a saddle point. This is the state variable that requires algebra cancelling the 'A' state variable in order to get its equation of motion (without A canceling, you cannot get a dF/dt vs F type plot easily [as a function of F and parameters]). We think this result is invalid, as there must be some assumptions in the algebra that invalidate our desired interpretation.  
+#' Unfortunately, this state variable only shows a trivial stable node and a saddle point. This is the state variable that requires algebra cancelling the 'A' state variable in order to get its equation of motion (without A canceling, you cannot get a dF/dt vs F type plot easily [as a function of F and parameters]). We think this result is invalid, as there must be some assumptions in the algebra that invalidate our desired interpretation.  
 #'   
 #' \FloatBarrier  
 #'   
 #' ***  
 #'   
-
+#'   
+#' ##Figure: Combined A, J, F Motion
+#+ figure-eqMotion-AJF, fig.width=5, fig.height=5, fig.cap="**Figure.** Motion of A, J, and F. Note that the equation of motion for F failed to exhibit alternate states. In formulating the equation for motion of F, there is an algebraic step that requires dropping from terms via division by A, which assume that A≠0. Therefore, states of F that correspond to A=0 are invalid. The equation of motion for A indicates that one of the stable nodes is at A=0, implying that the equation of motion for F is inaccurate in the corresponding region."
+xlabs <- c("A","J","F") #ylabs <- c("dA/dt", "dJ/dt", "dF/dt")
+ylabs <- paste0("d",xlabs,"/dt")
+svars <- paste0(xlabs,"0")
+par(mfrow=c(3,3), mar=c(1.85,1.85,0.75,0.25), mgp=c(1,0.15,0), tcl=-0.15, ps=9, cex=1)
+for(s in 1:3){
+	for(i in 2:length(qevals)){
+		curve(stateMotion(state0=x, stateVar=svars[s], pars=c(qE=qevals[i])), from=0, to=20, ylab=ylabs[s], xlab=xlabs[s])
+		abline(h=0, lty=2)
+		mtext(paste0("qE=",round(qevals[i],2)), side=3, line=0, adj=0.05, font=2)
+	}
+}
 #' \FloatBarrier  
 #'   
 #' ***  
