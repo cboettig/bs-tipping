@@ -1,19 +1,18 @@
 ---
-title: S-Tipping vs B-Tipping
-## We can figure out author order later on who end up doing more etc :-)
+title: "Bifurcation or state tipping: assessing transition type in a model trophic cascade"
 author:
   - name: Ryan Batt
-    affiliation: rpirutgers
+    affiliation: rb
   - name: Carl Boettiger
     email: cboettig@berkeley.edu
     affiliation: espm
     footnote: Corresponding Author
-
 address:
   - code: espm
-    address: Department of Environmental Science, Policy, and Management, University of California, Berkeley, CA 94720
-  - code: rpirutgers
-    address: Rensselaer Polytechnic Institute and Rutgers University
+    address: "Department of Environmental Science, Policy, and Management, University of California, Berkeley, CA 94720"
+  - code: rb
+    address: "Rensselaer Polytechnic Institute, Department of Biological Sciences, Troy, NY 12309 USA; 2Rutgers University, Department of Ecology, Evolution, and Natural Resources, New Brunswick, NJ 08901 USA"
+    
 abstract: |
   This is the abstract.
 
@@ -35,86 +34,82 @@ keywords: tipping point, bifurcation, saddle-node, state
 
 # Introduction
 
-Critical transistions.
+Ecological systems prone to abrupt changes, such as a fishery collapsing, can be challenging to manage. These abrupt dynamics are often referred to as regime shifts, and result from nonlinearities in the underlying system dynamics. Therefore, ecologists have often turned to studying the dynamics of nonlinear but simple mathematical models to better understand and manage ecosystems.  
 
-Two flavors: S tipping vs B tipping
+There are essentially two different mechanisms by which a system exhibiting alternative stable states can experience a sudden transition from one state to another [@Scheffer2001]: state tipping (S-tipping) or bifurcation (B-tipping).  Figure 1 illustrates these two different mechanisms.  B-tipping is a sudden transition that is induced by slow changes to a parameter of the underlying dynamical system that reduce the stability and ultimately destroy the stable node, as it collides with an unstable saddle-point in a saddle-node bifurcation (aka a fold bifurcation or "blue sky catastrophe," [@Strogatz2001]). In contrast, S-tipping involves a perturbation directly to a state variable that carries the system across the separatrix into an alternative stable state, without any such change to the underlying shape or existence of either attractor.  S-tipping can be driven by purely stochastic events or direct exogenous forcing. Crucially, only one of these mechanisms, B-tipping, will exhibit the phenomenon of Critical Slowing Down (CSD), a pattern that has received great attention in both theoretical and empirical studies for its potential as an early warning signal of such a regime shift [e.g. @Wissel1984; @Scheffer2009; @Scheffer2015].  
 
-Dimensionality.  Absense of an explicit model often makes it difficult to intuit if and how a complex ecosystem can be intepreted in terms of this simple one-dimensional bifurcation process.  Lack of clarity about what defines the "state" and what defines the "parameters" leads to confusion.  These issues are easily glossed over...
+Despite this attention, convincing empirical demonstrations of critical slowing down are still rare, particularly outside carefully controlled laboratory settings [e.g. @Dai2012]. A foundational example can be found in studies of lake ecosystems [e.g. @Carpenter2008], which can exist in either a "piscivore dominated" or "planktivore dominated" states (Figure 1).  Significant previous work has established evidence for these alternative stable states and the potential for sudden transitions between the states that cannot be easily reversed. Then in 2011, a landmark study of @Carpenter2011 analyzed the experimental manipulation of an initially plantivore-dominated state as a definitive example of CSD phenomena providing an early warning signal prior to a sudden transition to the piscivore dominated state. Yet was this manipulation truly an example of B-tipping, where CSD is theoretically predicted, or S-tipping, which does not create the CSD phenomenon? 
 
-Focus on a prominent example from lake ecosystems.
+![S-tipping vs B-tipping.  A critical transition in a system with alternative stable states can be driven either by a perturbation to the state, driving the system across the separatrix (top panel), or by a bifurcation, in which a stable point is annihilated (bottom panel)](figures/scheffer-fig.png)
+
+B-tipping is typically considered to be the result of slow change in a parameter of [e.g. @Scheffer2009] the system which ultimately leads to the fold bifurcation (or close enough to a fold bifurcation for stochasticity to finish the job).  S-tipping involves manipulation of the state variable.  @Carpenter2011 describe driving the critical transition through the gradual addition of piscivores (largemouth Bass), which drives a transition characterized by low-piscivore density into one of high piscivore density.  If the state (piscivore density) is being manipulated directly, then is this not an example of S-tipping, and thus unsuitable to test for the presence of CSD?  Although the simplicity of ball-in-cup (potential well) based descriptions of regime shifts makes them alluring, this question is impossible to address properly without a more mathematically precise description of the system and the manipulation involved.  Surprisingly, despite the central importance the piscivore transitions have played in our understanding of ecosystem regime shifts, these details have never been clearly presented in prior publications.  Here, we provide a direct analysis of the underlying model in the piscivory alternative stable state system to demonstrate why these studies are indeed an example of B-tipping.
 
 
-# Model
+Central to resolving this question is untangling a second issue that frequently arises in the discussion of alternative stable state dynamics in ecological systems: the issue of dimension.  The S-tipping and B-tipping transitions illustrated in Figure 1 are fundamentally rooted in one-dimensional analysis: the state consists of a single continuously valued dynamical variable (i.e. population density of adult bass).  Ecosystems are notoriously more complex, and this lake ecosystem is no exception. Here, we use analyze previously published models  of trophic cascades to determine whether manipulating the top predator constitutes B-tipping or S-tipping. Common versions include 5 state variables, ranging from top predators to primary producers. We accomplish this by performing dimension reduction on the full 5D model, and surmising whether the reduced model can be expressed in a way such that manipulating predator abundance is tantamount to manipulating a parameter, or if it necessarily constitutes state manipulation. This exercise facilitates the interpretation of the lake experiment in the context of predicting regime shifts by using a 1D model to understand a high dimensional system.
 
-@Carpenter2008
 
-# Analysis 
+# Methods
 
-Variable | Description
--------- | ----------------
- $A$     | Adult Bass
- $J$     | Juvenile Bass
- $F$     | Planktivore zooplankton
- $H$     | Herbivorous zooplankton
- $P$     | Phytoplankton
+## Model Description
  
+In the model of the lake food web, largemouth bass (Micropterus salmoides, A) are the top predator. Intuitively, juvenile bass (J) mature into A, and J are produced by A. Bass feed on other fish, including their own young (J) and other planktivorous fish (F), (i.e. Sunfish and similar forage fish species). These planktivores and juvenile bass (which are also planktivores) eat herbivorous zooplankton (H), which in turn eat phytoplankton (P). Because bass fry are small enough to be eaten by "planktivorous" fish, J can be consumed by F. Furthermore, F and J compete with each other for food (H). Thus, there are strong pairwise interactions between the three fish groups, and the dynamics of these groups extend into the planktonic portion of the food web.
+	The five-dimensional model of the food web includes the aforementioned state variables consisting of three fish groups (A, F, J) and two planktonic groups (H, P):
 
-The original model presented in @Carpenter2008 is defined in terms of continuous dynamics within years coupled to discrete annual dynamics.  Within a given year:
- 
-$$\frac{d A}{dt} = - q E A$$
-$$d F = \left(D_f (F_R - F) - c_{FA} FA \right) dt  + \sigma_F dW_f$$
+$$\begin{array}{llr} \dot{A} &= sJ - qA - m_A A &(1) \\ \dot{F} &= D_F(F_o - F) - c_{FA}FA &(2)\\ \dot{J} &= fA - c_{JA}JA - \frac{c_{JF}vJF}{h+v+c_{JF}F} - sJ &(3)\\ \dot{H} &= D_H(H_R-H) + \alpha c_{HP}HP - c_{HF}HF &(4)\\ \dot{P} &= r_P L \gamma (I_0,P)P - mP - c_{PH}HP &(5)\\ \end{array}$$
 
-$$ \frac{dJ}{dt} = -c_{JA} JA - \frac{c_{JF} v FJ}{h + v + c_{JF} F}$$ 
+Decreases in adult bass abundance result from mortality ($m_A A$) and harvest ($qA$), and increases result from the maturation of the fraction of $J$ that survive ($s$) mortality (Eq. 1). Planktivorous fish diffuse ($D_F$) between a refuge of size $F_o$ and a foraging arena, and the predation rate of $A$ on $F$ is controlled by $c_{FA}$ (Eq. 2). Growth in $J$ is controlled by the fecundity ($f$) of $A$, but are subject to losses via cannibalization at a rate $c_{JA}$, and interactions with $F$ which are controlled by the rate at which $J$ hide ($h$) in a refuge or become vulnerable ($v$) to predation at a rate $c_{JF}$ as they enter an implicit foraging arena (Eq. 3). Herbivorous zooplankton diffuse between surface waters and a deep water refuge at a rate $D_H$, grow by preying on phytoplankton at rate $c_{HP}$ and converting phytoplankton biomass (phosphorus) by a factor $\alpha$, and decline as they are preyed upon by planktivores at a rate $c_{HF}$ (Eq. 4). Phytoplankton death is due to mortality and sinking at rate m or predation by herbivores at rate cHF, while their growth is controlled by the per capita growth rate ($r_P$), the availability of phosphorus (introduced at rate $L$), and the availability of light at the surface ($I_0$) and the density dependent growth response to phytoplankton in response to light ($\gamma$, Eq. 5). 
 
+## Dimension Reduction
 
-While dynamics between years are defined in terms of integrals over the within-year dynamics:
-
-$$A_{t+1} = s \int_t^{t+i} \left(A_{t} + J_{t} \right) dt $$
-$$F_{t+1} = \int_t^{t+i} F_{t} dt $$
-
-$$J_{t+1} = fsA_{t+1}$$
-
-Based on these equations, we can approximate these dynamics in continuous time as: 
-
-$$\frac{d A}{dt} = - q E A_t + sJ $$
-$$d F = \left(D_f (F_R - F) - c_{FA} FA \right) dt  + \sigma_F dW_f$$
+Our approach to determining whether the lake experiment constituted B-tipping or S-tipping is to reduce the dimensionality of the model described in Eqs. 1-5, and see if a 1-D expression of this model can produce alternate states and the corresponding fold bifurcation. Although transitions occur throughout the food web, we focus here on the fish dynamics (Eqs. 1-3) as they are most directly related to either harvest (q) or direct manipulation of adult bass (A). In the model, the dynamics of herbivorous zooplankton (H) and phytoplankton (P) do not influence A, F, or J. Therefore, the dimensionality of the model can easily be reduced from 5 to 3 by ignoring Eqs. 4-5 (the plankton) without loss of generality for the dynamics of Eqs. 1-3 (the fish). In addition to parameters, the dynamics of each fish state depend on itself and at least one other fish state. We observe that the dynamics of both the Juvenile bass (J) and forage fish (F) occur on fast timescales relative to the dynamics of long-lived adult bass. Therefore, we set Eqs. 2-3 to zero and solved for the estimate of the respective state variables given equilibrium:
 
 
-$$\frac{dJ}{dt} = -c_{JA} JA - \frac{c_{JF} v FJ}{h + v + c_{JF} F} + fA$$
+$$\begin{array}{llr}
+\hat A&= \frac{sJ}{q+m_A} &(6)\\
+\hat F&=\frac{D_FF_0}{D_F + c_{FA}A} &(7)\\
+\hat J&=\frac{fA}{c_{JA}A+s+\frac{c_{JF}vF}{h+v+c_{JF}F}} &(8)\\
+\end{array}$$
+
+The equation of motion for A (an expression of A's dynamics completely in terms of A and fixed parameters), is acquired by substituting the RHS of Eq. 7 for F in Eq. 8, then substituting the resulting expression for J in Eq. 1.  After some substitution, we can write the equation of motion for the adult bass, A, completely in terms of the adult bass population and fixed parameters of the system.  
+
+$$\begin{array}{llr}
+\dot{A} &=  sfA\Bigg(c_{JA}A+s+c_{JF}v\bigg(\frac{(h+v)(D_F+c_{FA}A)}{D_F F_o}+c_{JF}\bigg)^{-1}\Bigg)^{-1} - qA - m_A A &(9)
+\end{array}$$
 
 
 
-
-Dynamics for herbivorous plankton and phytoplankton are given only in continuous time:
-
-$$dH = \left(D_H (H_R - H) + \alpha c_{HP} HP - c_{HF} HF\right) dt + \sigma_H dW_h$$
-
-$$dP = \left( r_P L \gamma(I_o, P) P  - m P - c_{PH} HP \right) dt + \sigma_P dW_P$$
-
-### Non-Dimensionalization
+To determine if this equation exhibits alternative stable states and the potential for B-tipping with changing $q$
 
 
-$$\tilde F := D_f (F - F_R) $$
-$$\frac{d A}{dt} = - q E A_t + sJ $$
-$$d \tilde F = - \left(1 + c_{fA} A \right) \tilde F  dt  + \sigma_F dW_f$$
-$$\beta := \frac{h+v}{c_{JF}} $$
+## Simulations
 
-$$\frac{d J}{dt} = fA -\left(c_{JA} A + \frac{v F}{\beta + F} \right) J $$
+We performed simulations in which we initialized the 5D model at equilibrium with a low but negative harvest rate (q=-0.001), which can be interpreted as per capita stocking of A. We proceeded to linearly increase q at each time step over 1020 years with a time step size of 0.01 years (102000 time steps total) until q reached a value of 0.001. At each time step a small amount of additive, normally distributed noise was added to Eqs. 1-3. Values for state variables less than 0.001 were set to 0.001 to prevent ecologically impossible values resulting from our numerical approximation of continuous dynamics.  R code for these simulations is included in supplementary materials.
+
+# Results
+
+Plotting this equation using established ranges for ecological parameters [CITATION],  Figure 3 shows that the system should support two alternative stable states, and can undergo a fold bifurcation (in reverse, creating a new stable point) when "catch" q is decreased sufficiently.  This sudden transition is felt in other dimensions as it's impact cascades down to the lower trophic levels.  
+
+These same dynamics can be seen in the direct numerical simulations of the full 5-dimensional model.  At a q of 0, the fish in the simulation underwent a critical transition (Figure 2). This transition occurred during time step 510, although an abrupt change in state was not observed until step 850. The changes in A and J were similar, but were inversely related to those in F. The predation effect of A on J was small compared to the role of A's fecundity in producing J and A's role as a predator of F, which negatively impacts J as well. Overall, both bass time series decreased with increasing q (abruptly when stocking converted to harvest at q=0), whereas the abundance of planktivorous fish was positively correlated with $q$. 
+
+The fish dynamics cascaded down to lower trophic levels, although H and P did not undergo abrupt transitions at the same time as the fishes. Instead, $H$ and $P$ exhibited strong nonlinear changes much earlier in the time series after $q$ had increased only slightly. The small cumulative increase in $q$ leading up to step 20 caused a slight increase in $F$ and a dramatic decline in $H$ ($F$'s prey); after its initial decline, the abundance of $H$ was 0.001 for the remainder of the time series. When H abruptly declined, P abruptly increased, then continued to increased approximately linearly for the remainder of the time series. Therefore, increasing q caused declines in both bass states ($A$ and $J$), an increase in planktivorous fish ($F$), a decline in herbivorous zooplankton ($H$), and an increase in phytoplankton ($P$), a pattern consistent with a trophic cascade. All state variables exhibited abrupt state changes at some point in the time series.
 
 
-$$\tilde H := D_H (H - H_R) $$
-$$d \tilde H = \tilde H \left(1 + \alpha c_{\tilde HP} P - c_{\tilde HF} F\right) dt + \sigma_H dW_h$$
+
+# Discussion 
+
+These results demonstrate that the system considered can indeed be driven through fold bifurcations as the parameter $q$ is slowly tuned up or down, forcing the creation or annihilation of an alternative stable state -- confirming the presence of B-tipping in this system. Simulations of the same system using previous estimates for ecological parameters confirm that the predictions of the 1-dimensional approximation (eq 9) correspond with the dynamics observed in the full model. 
+
+This analysis also highlights the importance of what might appear a merely semantic issue that in fact corresponds to fundamentally different dynamics. In this formulation, the control parameter q corresponds to harvest (positive q) or stocking (negative q) of adult bass in the lake. It is this aspect that first gives the appearance of state tipping dynamics, since it suggests the state is being somehow "directly manipulated". Yet from a mathematical standpoint, it is irrelevant if the control parameter corresponds to some environmental or policy variable (fishing regulations, fish migration into the lake), which in turn increases or decreases net mortality proportionally, or if the manipulation directly adds or removes adult bass -- the feature that distinguishes this manipulation from a S-tipping transition comes down to the timescales involved. Slowly increasing in the amount of bass stocked in the lake (i.e. decreasing q, effectively running the scenario of increasing fishing harvests in reverse) gives the rest of the food web time to adjust.  In contrast, a single large introduction of many bass would create an S-tipping transition, driving the system immediately into an alternate stable state without exhibiting CSD phenomena needed to evaluate early warning signals of a tipping point.  
+
+All though we have focused on the analysis of deterministic models for simplicity, these results can easily be interpreted in the context of stochastic models as well. (Recall that in practice, the detection of early warning signals associated with CSD requires some level of stochasticity to generate the variance needed to detect slowing down). Under a stochastic model, the distinction between S-tipping and B-tipping is slightly blurred, since a system that gets close enough to the tipping point due to changing parameters (B-tipping) will ultimately be able to jump across the separatrix (S-tipping) before the actual bifurcation event. In a stochastic system, fluctuations to the state variable act as intrinsic sources of perturbations, but though part of the system, large chance deviations are no more predictable than sudden exogenous forcing: there is no CSD prior to purely stochastic transitions [@PRSB2013], even though retrospectively a large deviation will share similar statistical signatures such as rapidly increasing variance and autocorrelation [@PRSB2012].
+
+More generally, our analysis draws attention to issues of dimensionality that have been largely overlooked despite significant interest in questions of regime shifts and early warning signals [e.g. @Clements2018; @Scheffer2015; @Scheffer2012].  The popularity of this topic has sometimes led to casually equating any sudden shift with fold bifurcations, overlooking any assumptions necessary to approximate a complex dynamical system with such a one-dimensional model.  Influential reviews on abrupt change in ecological systems [e.g. @Ratajczak2018] focus almost exlusively on descriptions of one-dimensional state-spaces without discussion of if, when or how complex systems such as the ecosystem food-web considered here can be appropriately described by a non-linear equation in a single dimension.  The analysis shown here illustrates this process on the basis of a fast-slow timescale approximation, which allows us to replace the faster dynamics at lower trophic levels into their equilibrium states.  (Note also that the nonlinearity necessary to support alternate stable states only emerges through this approximation.)  Thus, for the five-dimensional model considered here, our analysis shows that the familiar one-dimensional characterization of a sudden shift being driven by a fold bifurcation is indeed appropriate, but this was not all-together evident a priori.  The fact that CSD phenomena can occur in many different models has been suggested to mean that CSD is a generic or universal early warning indicator [@Scheffer2009] of a critical transition.  In practice, many higher dimensional models may not be so well approximated along a single manifold, or may correspond to other bifurcations or transistions [@TE2013].  As such, analyses of regime shifts should not be too quick to sweep these details under the rug.  Mechanistic understanding will always require models.  
 
 
-### Dimensionality reduction
-
-## Implications for Resilience and Early Warning
-
-# Discussion
 
 # Acknowledgements
 
-CB acknowledges support in part from USDA National Institute of Food and Agriculture, Hatch project CA-B-INS-0162-H.
+CB acknowledges support in part from USDA National Institute of Food and Agriculture, Hatch project CA-B-INS-0162-H.  The authors also acknowledge Alan Hastings, whose off-hand question at a seminar talk inspired the analysis presented here.
 
 
 \newpage
