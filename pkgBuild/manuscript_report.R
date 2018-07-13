@@ -90,27 +90,27 @@ opts_chunk$set(
 #' 
 #' Focusing on the fish, and setting each of the 3 fish differential equations to 0 and solving for the respective state variables:  
 #' \begin{array}{llr}
-#' A&= \frac{sJ}{qE+1-s} &(6)\\[10pt]
+#' A&= \frac{sJ}{qE+m_A} &(6)\\[10pt]
 #' J&=\frac{fA}{c_{JA}A+s+\frac{c_{JF}vF}{h+v+c_{JF}F}} &(7)\\[10pt]
 #' F&=\frac{D_FF_0}{D_F + c_{FA}A} &(8)\\[10pt]
 #' \end{array}
 #' 
 #' Substitute Eq7 into Eq6, and solve for $A$:  
 #' \begin{array}{llr}
-#' A&=\frac{sf}{c_{JA}(qE+1-s)} - \frac{s}{c_{JA}} - \frac{c_{JF}vF}{x(h+v+c_{JF}F)} &(9)
+#' A&=\frac{sf}{c_{JA}(qE+m_A)} - \frac{s}{c_{JA}} - \frac{c_{JF}vF}{c_{JA}(h+v+c_{JF}F)} &(9)
 #' \end{array}
 #' 
 #' Substitute Eq9 into Eq2, giving us the dynamics of $F$ as a function of $F$ and parameters:  
 #' \begin{array}{llr}
-#' \dot{F} &= d(F_o-F) - c_{FA}F(\frac{sf}{c_{JA}(qE+1-s)} - \frac{s}{c_{JA}} - \frac{c_{JF}vF}{c_{JA}(h+v+c_{JF}F)}) &(10)
+#' \dot{F} &= D_F(F_o-F) - c_{FA}F(\frac{sf}{c_{JA}(qE+m_A)} - \frac{s}{c_{JA}} - \frac{c_{JF}vF}{c_{JA}(h+v+c_{JF}F)}) &(10)
 #' \end{array}
 #'   
 #' Eq10 is what is used in `dF_dt_1state`.  
 #' 
 #' **Alternatively**, we can rearrange the equations to perform a different seat of substituions to solve for $\dot{J}$ as a function of $J$ and parameters (juvenile bass):  
 #' \begin{array}{llr}
-#' Q &\equiv 1/(qE + 1 - s) \\
-#'  \dot{J} &= fsJQ - c_{JA}sQJ^2 - sJ - \frac{c_{JF}vJ}{\frac{(h+v)}{(D_FF_o)(D_F+c_{FA}sQJ)^{-1}} + z} &(11)
+#' Q &\equiv 1/(qE + m_A) \\
+#'  \dot{J} &= fsJQ - c_{JA}sQJ^2 - sJ - \frac{c_{JF}vJ}{\frac{(h+v)}{(D_FF_o)(D_F+c_{FA}sQJ)^{-1}} + c_{JF}} &(11)
 #' \end{array}
 #'   
 #' \FloatBarrier  
