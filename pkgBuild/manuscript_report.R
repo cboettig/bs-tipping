@@ -91,26 +91,36 @@ opts_chunk$set(
 #' Focusing on the fish, and setting each of the 3 fish differential equations to 0 and solving for the respective state variables:  
 #' \begin{array}{llr}
 #' A&= \frac{sJ}{qE+m_A} &(6)\\[10pt]
-#' J&=\frac{fA}{c_{JA}A+s+\frac{c_{JF}vF}{h+v+c_{JF}F}} &(7)\\[10pt]
-#' F&=\frac{D_FF_0}{D_F + c_{FA}A} &(8)\\[10pt]
+#' F&=\frac{D_FF_0}{D_F + c_{FA}A} &(7)\\[10pt]
+#' J&=\frac{fA}{c_{JA}A+s+\frac{c_{JF}vF}{h+v+c_{JF}F}} &(8)\\[10pt]
 #' \end{array}
 #' 
-#' Substitute Eq7 into Eq6, and solve for $A$:  
+
+#' 
+#' **Begin Equations of Motion**  
+#' Although our ultimate goal is to see if the equation of motion for $J$ or $F$ shows alternate states, for completeness we will also present the equation of motion for $A$, which is acquired by substituting the RHS of Eq7 for $F$ in Eq8, then substituting the resulting expression for $J$ in Eq1:  
 #' \begin{array}{llr}
-#' A&=\frac{sf}{c_{JA}(qE+m_A)} - \frac{s}{c_{JA}} - \frac{c_{JF}vF}{c_{JA}(h+v+c_{JF}F)} &(9)
+#' \dot{A} &=  sfA\Bigg(c_{JA}+s+c_{JF}v\bigg(\frac{(h+v)(D_F+c_{FA}A)}{D_F F_o}+c_{JF}\bigg)^{-1}\Bigg)^{-1} &(9)
 #' \end{array}
 #' 
-#' Substitute Eq9 into Eq2, giving us the dynamics of $F$ as a function of $F$ and parameters:  
+#' To get the equation of motion for $F$, we begin by getting an expression for $A$ that depends only on $F$ and parameters, which is achieved by substituting Eq8 into Eq6 and solving for $A$:
 #' \begin{array}{llr}
-#' \dot{F} &= D_F(F_o-F) - c_{FA}F(\frac{sf}{c_{JA}(qE+m_A)} - \frac{s}{c_{JA}} - \frac{c_{JF}vF}{c_{JA}(h+v+c_{JF}F)}) &(10)
+#' A&=\bigg({\frac{sfA}{c_{JA}A+s+\frac{c_{JF}vF}{h+v+c_{JF}F}}}\bigg)\bigg(qE+m_A\bigg)^{-1} &(10a)\\[15pt]
+#' sfA &= A(qE+m_A)\big(c_{JA}A+s+\frac{c_{JF}vF}{h+v+c_{JF}F}\big) &(10b)\\[10pt]
+#' sf &=(qE+m_A)\big(c_{JA}A+s+\frac{c_{JF}vF}{h+v+c_{JF}F}\big) &(10c)\\[10pt]
+#' A&=\frac{sf}{c_{JA}(qE+m_A)} - \frac{s}{c_{JA}} - \frac{c_{JF}vF}{c_{JA}(h+v+c_{JF}F)} &(10d)
+#' \end{array}
+#' Going from Eq10b to Eq10c is achieved by dividing both sides of the equation by $A$, which implies that in Eq10c $A$ cannot be 0 when $\dot{A}$ is 0. We will return to the consequences of this assumption later as we assess our derived equation of motion for $F$. By subtituting the RHS of Eq10d for $A$ in Eq2, we arrive at the equation of motion for $F$:
+#' \begin{array}{llr}
+#' \dot{F} &= D_F(F_o-F) - c_{FA}F(\frac{sf}{c_{JA}(qE+m_A)} - \frac{s}{c_{JA}} - \frac{c_{JF}vF}{c_{JA}(h+v+c_{JF}F)}) &(11)
 #' \end{array}
 #'   
 #' Eq10 is what is used in `dF_dt_1state`.  
 #' 
-#' **Alternatively**, we can rearrange the equations to perform a different seat of substituions to solve for $\dot{J}$ as a function of $J$ and parameters (juvenile bass):  
+#' The equation of motion for $J$ can be acquired by substituting the RHS of Eq7 for $F$ in Eq3 ,then exchanging $A$ in that resulting expression for the RHS of Eq6:  
 #' \begin{array}{llr}
 #' Q &\equiv 1/(qE + m_A) \\
-#'  \dot{J} &= fsJQ - c_{JA}sQJ^2 - sJ - \frac{c_{JF}vJ}{\frac{(h+v)}{(D_FF_o)(D_F+c_{FA}sQJ)^{-1}} + c_{JF}} &(11)
+#'  \dot{J} &= fsJQ - c_{JA}sQJ^2 - sJ - \frac{c_{JF}vJ}{\frac{(h+v)}{(D_FF_o)(D_F+c_{FA}sQJ)^{-1}} + c_{JF}} &(12)
 #' \end{array}
 #'   
 #' \FloatBarrier  
