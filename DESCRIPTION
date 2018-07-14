@@ -42,6 +42,7 @@ Imports:
     deSolve,
     rootSolve
 Suggests:
-    tidyverse
+    tidyverse,
+    patchwork
 RoxygenNote: 5.0.1
 Remotes: thomasp85/patchwork
