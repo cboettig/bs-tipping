@@ -388,8 +388,13 @@ for(s in 1:3){
 		mtext(paste0("qE=",round(qevals[i],2)), side=3, line=0, adj=0.05, font=2)
 	}
 }
+#'   
+#' \FloatBarrier  
+#'   
+#' ***  
+#'   
 #' ##Figure: A Motion A Ball-in-Cup
-#+ figure-Amotion-ballincup, fig.width=6, height=3.5, fig.cap="**Figure.** Motion of A, and its integral (ball-in-cup diagram)."
+#+ figure-Amotion-ballincup, fig.width=6, fig.height=3.5, fig.cap="**Figure.** Motion of A, and its integral (ball-in-cup diagram)."
 Adot <- function(A, pars=c(qE=-0.001)){
 	parsF <- unlist(formals(ecoStep)[c("fA", "cJA", "cJF", "cFA", "vuln", "hide", "surv", "Fo", "DF")])
 	if(missing(pars)){ # if a function requires qE, pars needs to be supplied (e.g., pars=c(qE=0.1))
