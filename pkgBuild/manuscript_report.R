@@ -268,7 +268,7 @@ paramDefs <- c(
 )
 colNames <- c('Symbol','Description','Quantity','Units')
 paramTable_mat <- matrix(paramDefs, byrow=TRUE, ncol=4, dimnames=list(NULL,colNames))
-kable(paramTable_mat)
+kable(paramTable_mat, caption="**Table 1.** Model parameters, description, values, and units. Parameters are taken from [@carpenter2008] and [@carpenter2013]. The function \\gamma describes phytoplankton growth, and can be found in [@carpenter2008].")
 
 #' #Setup
 #+ setup
