@@ -3,9 +3,10 @@
 language: R
 sudo: false
 cache: packages
-script: 
+
+#script: 
 ## test that all .Rmd files can render 
-  - R -e 'lapply(list.files(pattern=".*.Rmd", recursive=TRUE), rmarkdown::render)'
+#  - R -e 'lapply(list.files(pattern=".*.Rmd", recursive=TRUE), rmarkdown::render)'
 ## Optionally apply lintr
 #  - R -e 'lapply(list.files(pattern=".*.Rmd", recursive=TRUE), function(x) testthat::expect_length(lintr::lint(x),0))'
 

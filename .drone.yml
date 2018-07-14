@@ -1,7 +1,8 @@
 pipeline:
   build:
-    image: rocker/verse:3.4.4
+    image: rocker/verse
     commands:
+      - R -e 'devtools::check()'
       - R -e 'devtools::install(dep=TRUE)'
       - R -e 'lapply(list.files(pattern=".*.Rmd", recursive=TRUE), rmarkdown::render)'
 #      - R -e 'lapply(list.files(pattern=".*.Rmd", recursive=TRUE), function(x) testthat::expect_length(lintr::lint(x),0))'
