@@ -251,9 +251,10 @@ stabClass <- function(qE, pars, func=fs2D, Jvals=seq(0,2E3,length.out=2), Fvals=
 	urs <- rs[!duplicated(paste0(round(rs[,"J0"],4),round(rs[,"F0"],4))), c("qE","J0","F0"), drop=FALSE]
 
 	stab <- function(x){
-		st <- phaseR::stability(fs2D, y.star=x[-1,drop=FALSE], parameters=c(qE=qE,pars), summary=FALSE)
+		st <- phaseR::stability(fs2D, ystar=x[-1,drop=FALSE], parameters=c(qE=qE,pars), summary=FALSE)
 		# if(is.null(names(st$parameters))){names(st$parameters) <- "I"}
-		o <- cbind(data.frame(J0=st$y.star[1], F0=st$y.star[2], classification=st$classification, Delta=st$Delta, discriminant=st$discriminant, tr=st$tr),as.list(st$parameters))
+		o <- cbind(data.frame(J0=st$ystar[1], F0=st$ystar[2], classification=st$classification,
+		                      Delta=st$Delta, discriminant=st$discriminant, tr=st$tr),as.list(st$parameters))
 		rownames(o) <- NULL
 		o$classification <- as.character(o$classification)
 		return(o)

@@ -6,3 +6,5 @@
 ^drone.yml/.*$
 ^\.travis.yml/.*$
 ^README.md/.*$
+^reviews/.*$
+^analysis/.*$

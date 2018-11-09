@@ -6,3 +6,8 @@
 *.spl
 *.tex
 .DS_Store
+*.bbl
+*.blg
+*.toc
+*.html
+*.fff

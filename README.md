@@ -1,7 +1,6 @@
 # bs-tipping
 
-[![Build Status](https://drone.carlboettiger.info/api/badges/cboettig/bs-tipping/status.svg)](https://drone.carlboettiger.info/cboettig/bs-tipping)
-
+[![Build Status](https://travis-ci.org/cboettig/bs-tipping.svg?branch=master)](https://travis-ci.org/cboettig/bs-tipping)
 
 - Authors: Ryan Batt & Carl Boettiger
 
