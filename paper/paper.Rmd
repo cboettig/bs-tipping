@@ -45,7 +45,7 @@ Despite this attention, convincing empirical demonstrations of critical slowing 
 alternative stable states can be driven either by a perturbation to the
 state, driving the system across the separatrix (top panel), or by a
 bifurcation, in which a stable point is annihilated (bottom panel). 
-Figure reproduced from @Scheffer2001 with permission.}
+Figure reproduced from Scheffer et al (2001) with permission.}
 \end{figure}
 
 
